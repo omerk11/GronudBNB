@@ -14,9 +14,9 @@ namespace GroundBNB.Data
 
         }
         public DbSet<Apartment> Apartments { get; set; }
-        public DbSet<ApartmentOwner> ApartmentOwners { get; set; }
-        public DbSet<Guest> Guests { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<Apartment>().ToTable("Apartment");

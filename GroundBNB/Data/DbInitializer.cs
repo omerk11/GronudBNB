@@ -13,10 +13,14 @@ namespace GroundBNB.Data
             context.Database.EnsureCreated();
 
             // Look for any students.
-            if (context.ApartmentOwners.Any())
+            if (context.Users.Any())
             {
                 return;   // DB has been seeded
             }
+
+            context.Apartments.RemoveRange(context.Apartments.ToList());
+            context.Users.RemoveRange(context.Users.ToList());
+            context.Reservations.RemoveRange(context.Reservations.ToList());
             var apartments = new Apartment[]
             {
 
@@ -27,23 +31,13 @@ namespace GroundBNB.Data
             }
             context.SaveChanges();
 
-            var apartmentOwners = new ApartmentOwner[]
+            var users = new User[]
             {
 
             };
-            foreach (ApartmentOwner owner in apartmentOwners)
+            foreach (User user in users)
             {
-                context.ApartmentOwners.Add(owner);
-            }
-            context.SaveChanges();
-
-            var guests = new Guest[]
-            {
-
-            };
-            foreach (Guest guest in guests)
-            {
-                context.Guests.Add(guest);
+                context.Users.Add(user);
             }
             context.SaveChanges();
 
