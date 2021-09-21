@@ -9,8 +9,8 @@ namespace GroundBNB.Models
     public class Apartment
     {
         public int ID { get; set; }
-        [Required(ErrorMessage = "Titel required")]
-        public string Titel { get; set; }
+        [Required(ErrorMessage = "Title required")]
+        public string Title { get; set; }
         [Required(ErrorMessage = "Apartment Description required")]
         public string Description { get; set; }
         [Required(ErrorMessage = "Number Of Rooms required")]
@@ -27,7 +27,7 @@ namespace GroundBNB.Models
         public int ApartmentNumber { get; set; }
         [Required(ErrorMessage = "Owner ID required")]
         public int ApartmentOwnerID { get; set; }   
-        public ApartmentOwner ApartmentOwner { get; set; }
+        public User ApartmentOwner { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
     }
 }
