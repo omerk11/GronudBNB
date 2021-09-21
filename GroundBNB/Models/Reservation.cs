@@ -12,7 +12,7 @@ namespace GroundBNB.Models
         [Range(1, 5)]
         public int? Rating { get; set; }
         public string? Review { get; set; }
-        public int NumberOdGuests { get; set; }
+        public int NumberOfGuests { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime StartDate { get; set; }

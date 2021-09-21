@@ -26,9 +26,10 @@ namespace GroundBNB.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "The password is required")]
         public string Password { get; set; }
+        public bool IsAdmin { get; set; }
         public ICollection<Apartment> Apartments { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
-        public bool IsAdmin { get; set; }
+        
 
 
     }
