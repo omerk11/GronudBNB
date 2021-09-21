@@ -17,12 +17,14 @@ namespace GroundBNB.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Apartment>().ToTable("Apartment");
-        //    modelBuilder.Entity<ApartmentOwner>().ToTable("ApartmentOwner");
-        //    modelBuilder.Entity<Guest>().ToTable("Guest");
-        //    modelBuilder.Entity<Reservation>().ToTable("Reservation");
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+        }
     }
 }
