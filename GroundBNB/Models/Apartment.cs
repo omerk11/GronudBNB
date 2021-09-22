@@ -25,6 +25,9 @@ namespace GroundBNB.Models
         public int Floor { get; set; }
         [Required(ErrorMessage = "Apartment Number required")]
         public int ApartmentNumber { get; set; }
+        [Required(ErrorMessage = "Apartment Number required")]
+        [Range(1,30)]
+        public int MaxNumOfGuests { get; set; }
         [Required(ErrorMessage = "Owner ID required")]
         public int ApartmentOwnerID { get; set; }   
         public User ApartmentOwner { get; set; }

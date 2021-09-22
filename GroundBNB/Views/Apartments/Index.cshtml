@@ -37,6 +37,9 @@
                 @Html.DisplayNameFor(model => model.ApartmentNumber)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.MaxNumOfGuests)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ApartmentOwner)
             </th>
             <th></th>
@@ -68,6 +71,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ApartmentNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxNumOfGuests)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ApartmentOwner.Email)

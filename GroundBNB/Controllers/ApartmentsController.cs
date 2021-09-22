@@ -57,7 +57,7 @@ namespace GroundBNB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,Description,NumOfRooms,PricePerDay,City,Street,Floor,ApartmentNumber,ApartmentOwnerID")] Apartment apartment)
+        public async Task<IActionResult> Create([Bind("ID,Title,Description,NumOfRooms,PricePerDay,City,Street,Floor,ApartmentNumber,MaxNumOfGuests,ApartmentOwnerID")] Apartment apartment)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace GroundBNB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Description,NumOfRooms,PricePerDay,City,Street,Floor,ApartmentNumber,ApartmentOwnerID")] Apartment apartment)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Description,NumOfRooms,PricePerDay,City,Street,Floor,ApartmentNumber,MaxNumOfGuests,ApartmentOwnerID")] Apartment apartment)
         {
             if (id != apartment.ID)
             {
