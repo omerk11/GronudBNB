@@ -71,15 +71,15 @@ namespace GroundBNB.Data
 
             var reservations = new Reservation[]
             {
-                new Reservation{NumberOfGuests = 1, StartDate = DateTime.Parse("15/10/2020"),EndDate = DateTime.Parse("18/10/2020"), PurchseDate = DateTime.Parse("15/08/2020") ,ApartmentID = 1, GuestID = 92818564},
-                new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("15/01/2021"),EndDate = DateTime.Parse("19/01/2021"), PurchseDate = DateTime.Parse("15/09/2020") ,ApartmentID = 1, GuestID = 92818564},
-                new Reservation{NumberOfGuests = 5, StartDate = DateTime.Parse("15/10/2020"),EndDate = DateTime.Parse("18/10/2020"), PurchseDate = DateTime.Parse("15/09/2020") ,ApartmentID = 3, GuestID = 39984456},
-                new Reservation{NumberOfGuests = 10, StartDate = DateTime.Parse("03/01/2021"),EndDate = DateTime.Parse("19/01/2021"), PurchseDate = DateTime.Parse("15/11/2020") ,ApartmentID = 3, GuestID = 81291855},
-                new Reservation{NumberOfGuests = 8, StartDate = DateTime.Parse("15/11/2021"),EndDate = DateTime.Parse("15/12/2021"), PurchseDate = DateTime.Parse("07/10/2021") ,ApartmentID = 5, GuestID = 81291855},//
-                new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("22/03/2021"),EndDate = DateTime.Parse("26/03/2021"), PurchseDate = DateTime.Parse("21/03/2021") ,ApartmentID = 7, GuestID =39984456 },
-                new Reservation{NumberOfGuests = 4, StartDate = DateTime.Parse("11/10/2021"),EndDate = DateTime.Parse("11/11/2021"), PurchseDate = DateTime.Parse("15/09/2021") ,ApartmentID = 8, GuestID = 85761565},
-                new Reservation{NumberOfGuests = 6, StartDate = DateTime.Parse("25/07/2021"),EndDate = DateTime.Parse("11/08/2021"), PurchseDate = DateTime.Parse("25/05/2021") ,ApartmentID = 10, GuestID =85761565 },
-                new Reservation{NumberOfGuests = 6, StartDate = DateTime.Parse("15/03/2022"),EndDate = DateTime.Parse("25/03/2022"), PurchseDate = DateTime.Parse("14/03/2022") ,ApartmentID = 11, GuestID = 92818564}
+                new Reservation{NumberOfGuests = 1, StartDate = DateTime.Parse("2020-10-15"),EndDate = DateTime.Parse("2020-10-18"), PurchseDate = DateTime.Parse("2020-08-15") ,ApartmentID = 1, GuestID = 92818564},
+                new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("2021-01-15"),EndDate = DateTime.Parse("2021-01-19"), PurchseDate = DateTime.Parse("2020-09-15") ,ApartmentID = 1, GuestID = 92818564},
+                new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("2020-10-15"),EndDate = DateTime.Parse("2020-10-18"), PurchseDate = DateTime.Parse("2020-09-15") ,ApartmentID = 3, GuestID = 39984456},
+                new Reservation{NumberOfGuests = 1, StartDate = DateTime.Parse("2021-01-03"),EndDate = DateTime.Parse("2021-01-19"), PurchseDate = DateTime.Parse("2020-11-15") ,ApartmentID = 3, GuestID = 81291855},
+                new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("2021-11-15"),EndDate = DateTime.Parse("2021-12-15"), PurchseDate = DateTime.Parse("2021-10-07") ,ApartmentID = 5, GuestID = 81291855},
+                new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("2021-03-22"),EndDate = DateTime.Parse("2021-03-26"), PurchseDate = DateTime.Parse("2021-03-21") ,ApartmentID = 7, GuestID =39984456 },
+                new Reservation{NumberOfGuests = 1, StartDate = DateTime.Parse("2021-10-11"),EndDate = DateTime.Parse("2021-11-11"), PurchseDate = DateTime.Parse("2021-09-15") ,ApartmentID = 8, GuestID = 85761565},
+                new Reservation{NumberOfGuests = 1, StartDate = DateTime.Parse("2021-07-25"),EndDate = DateTime.Parse("2021-08-11"), PurchseDate = DateTime.Parse("2021-05-25") ,ApartmentID = 10, GuestID =85761565 },
+                new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("2022-03-15"),EndDate = DateTime.Parse("2022-03-25"), PurchseDate = DateTime.Parse("2021-03-14") ,ApartmentID = 11, GuestID = 92818564}
             };
             foreach (Reservation res in reservations)
             {
