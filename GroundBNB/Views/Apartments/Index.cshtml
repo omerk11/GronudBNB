@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Find Your Dream Vacation Apartment!</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,74 +16,84 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Address
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NumOfRooms)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PricePerDay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Street)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Floor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApartmentNumber)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.MaxNumOfGuests)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApartmentOwner)
+                @Html.DisplayNameFor(model => model.PricePerDay)
             </th>
-            <th></th>
+            <th>
+                Rating
+            </th>
+
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumOfRooms)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PricePerDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Street)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Floor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApartmentNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxNumOfGuests)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApartmentOwner.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <h5>
+                        <a asp-action="Details" asp-route-id="@item.ID" style="">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                    </h5><br />
+
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+
+                    <h6>City: </h6>@Html.DisplayFor(modelItem => item.City)<br />
+                    <h6>St: </h6> @Html.DisplayFor(modelItem => item.Street)<br />
+                    <h6>Floor: </h6> @Html.DisplayFor(modelItem => item.Floor)<br />
+                    <h6>Apartment Number: </h6> @Html.DisplayFor(modelItem => item.ApartmentNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumOfRooms)
+                </td>
+                <td>
+                    Fit For @Html.DisplayFor(modelItem => item.MaxNumOfGuests) Guests
+                </td>
+                <td>
+                    <h6>$@Html.DisplayFor(modelItem => item.PricePerDay)</h6>/Day
+                </td>
+                <td>
+                    @{
+                        float rating = 0;
+                        int count = 0;
+                        foreach (Reservation res in item.Reservations)
+                        {
+                            if (res.Rating.HasValue)
+                            {
+                                rating += res.Rating.Value;
+                                count++;
+                            }
+                        }
+                        rating /= count;
+                        if (count > 0)
+                        {
+                            <a><h6>@rating Stars!</h6>(@count Reviews)</a>
+                        }
+                        else
+                        {
+                            <a>UnRated</a>
+                        }
+                    }
+
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

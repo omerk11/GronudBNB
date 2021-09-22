@@ -61,13 +61,12 @@ namespace GroundBNB.Data
                 new Apartment{ Title="2 Bedroom Suite", Description="", NumOfRooms = 8,City="Tel Aviv", Street="HaAvoda St 20", Floor = 18, ApartmentNumber = 72, ApartmentOwnerID = 19735819 ,PricePerDay = 745, MaxNumOfGuests =18},
                 new Apartment{ Title="Amazing Apartment", Description="", NumOfRooms = 5,City="Rishon LeZion", Street="HaNagid St 9", Floor = 7, ApartmentNumber = 26, ApartmentOwnerID = 19735819 ,PricePerDay = 242, MaxNumOfGuests =28}
             };
-            foreach(Apartment ap in apartments)
+            foreach (Apartment ap in apartments)
             {
                 context.Apartments.Add(ap);
             }
+            context.SaveChanges();
 
-               context.SaveChanges();
-        
 
             var reservations = new Reservation[]
             {
@@ -79,7 +78,7 @@ namespace GroundBNB.Data
                 new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("2021-03-22"),EndDate = DateTime.Parse("2021-03-26"), PurchseDate = DateTime.Parse("2021-03-21") ,ApartmentID = 7, GuestID =39984456 },
                 new Reservation{NumberOfGuests = 1, StartDate = DateTime.Parse("2021-10-11"),EndDate = DateTime.Parse("2021-11-11"), PurchseDate = DateTime.Parse("2021-09-15") ,ApartmentID = 8, GuestID = 85761565},
                 new Reservation{NumberOfGuests = 1, StartDate = DateTime.Parse("2021-07-25"),EndDate = DateTime.Parse("2021-08-11"), PurchseDate = DateTime.Parse("2021-05-25") ,ApartmentID = 10, GuestID =85761565 },
-                new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("2022-03-15"),EndDate = DateTime.Parse("2022-03-25"), PurchseDate = DateTime.Parse("2021-03-14") ,ApartmentID = 11, GuestID = 92818564}
+                new Reservation{NumberOfGuests = 2, StartDate = DateTime.Parse("2022-03-15"),EndDate = DateTime.Parse("2022-03-25"), PurchseDate = DateTime.Parse("2022-03-14") ,ApartmentID = 11, GuestID = 92818564}
             };
             foreach (Reservation res in reservations)
             {

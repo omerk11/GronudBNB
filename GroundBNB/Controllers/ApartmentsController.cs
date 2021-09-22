@@ -20,10 +20,13 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Apartments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var siteContext = _context.Apartments.Include(a => a.ApartmentOwner);
-            return View(await siteContext.ToListAsync());
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+
+            var apartments = _context.Apartments.Include(a => a.Reservations);
+            return View(await apartments.ToListAsync());
         }
 
         // GET: Apartments/Details/5
