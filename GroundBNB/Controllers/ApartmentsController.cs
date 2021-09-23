@@ -23,6 +23,7 @@ namespace GroundBNB.Controllers
         public async Task<IActionResult> Index(string sortOrder)
         {
             var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap;
+
             //Calculate rating for each apartment
             Dictionary<int, float> rating = new Dictionary<int, float>();
             Dictionary<int, int> reviewCounter = new Dictionary<int, int>();
@@ -42,12 +43,46 @@ namespace GroundBNB.Controllers
                 {
                     rating[ap.ID] /= reviewCounter[ap.ID];
                 }
-
             }
             apartments.ToList().ForEach(ap => ap.AvgRating = rating[ap.ID]);
             _context.SaveChanges();
             ViewData["ApartmentReviewCounter"] = reviewCounter;
-            apartments = apartments.OrderByDescending(ap => ap.AvgRating);
+
+            //Sort apartments
+            ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
+            ViewData["NumOfGuestsSortParm"] = sortOrder == "guests" ? "guests_desc" : "guests";
+            ViewData["RoomsSortParm"] = sortOrder == "rooms" ? "rooms_desc" : "rooms";
+            ViewData["RatingSortParm"] = sortOrder == "rating" ? "rating_desc" : "rating";
+            switch (sortOrder)
+            {
+                
+                case "price":
+                    apartments = apartments.OrderBy(ap => ap.PricePerDay);
+                    break;
+                case "price_desc":
+                    apartments = apartments.OrderByDescending(ap => ap.PricePerDay);
+                    break;
+                case "guests":
+                    apartments = apartments.OrderBy(ap => ap.MaxNumOfGuests);
+                    break;
+                case "guests_desc":
+                    apartments = apartments.OrderByDescending(ap => ap.MaxNumOfGuests);
+                    break;
+                case "rooms":
+                    apartments = apartments.OrderBy(ap => ap.NumOfRooms);
+                    break;
+                case "rooms_desc":
+                    apartments = apartments.OrderByDescending(ap => ap.NumOfRooms);
+                    break;
+                case "rating":
+                    apartments = apartments.OrderBy(ap => ap.AvgRating);
+                    break;
+                case "rating_desc":
+                default:
+                    apartments = apartments.OrderByDescending(ap => ap.AvgRating);
+                    break;
+            }
+            
             return View(await apartments.AsNoTracking().ToListAsync());
         }
 

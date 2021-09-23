@@ -20,16 +20,16 @@
                 Address
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumOfRooms)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaxNumOfGuests)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PricePerDay)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
             </th>
             <th>
-                Rating
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]">Rating</a>
             </th>
 
             <th>Actions</th>
@@ -67,7 +67,7 @@
                 <td>
                     @{
                         if (reviewCount[item.ID] > 0)
-                        {//add a link to all reviews rating[item.ID]
+                        {//add a link to all reviews
                             <a><h6>@item.AvgRating Stars!</h6>(@reviewCount[item.ID] Reviews)</a>
                         }
                         else
@@ -75,9 +75,7 @@
                             <a>UnRated</a>
                         }
                     }
-
                 </td>
-
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
