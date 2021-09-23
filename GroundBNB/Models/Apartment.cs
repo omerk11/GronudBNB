@@ -32,6 +32,7 @@ namespace GroundBNB.Models
         [DisplayName("Max Number Of Guests")]
         [Required(ErrorMessage = "Number Of Guests required")]
         public int MaxNumOfGuests { get; set; }
+        public float? AvgRating { get; set; }
         [Required(ErrorMessage = "Owner ID required")]
         public int ApartmentOwnerID { get; set; }   
         public User ApartmentOwner { get; set; }

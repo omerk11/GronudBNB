@@ -22,11 +22,33 @@ namespace GroundBNB.Controllers
         // GET: Apartments
         public async Task<IActionResult> Index(string sortOrder)
         {
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+            var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap;
+            //Calculate rating for each apartment
+            Dictionary<int, float> rating = new Dictionary<int, float>();
+            Dictionary<int, int> reviewCounter = new Dictionary<int, int>();
+            foreach (Apartment ap in apartments)
+            {
+                rating[ap.ID] = 0;
+                reviewCounter[ap.ID] = 0;
+                foreach (Reservation res in ap.Reservations)
+                {
+                    if (res.Rating.HasValue)
+                    {
+                        rating[ap.ID] += res.Rating.Value;
+                        reviewCounter[ap.ID] += 1;
+                    }
+                }
+                if (reviewCounter[ap.ID] != 0)
+                {
+                    rating[ap.ID] /= reviewCounter[ap.ID];
+                }
 
-            var apartments = _context.Apartments.Include(a => a.Reservations);
-            return View(await apartments.ToListAsync());
+            }
+            apartments.ToList().ForEach(ap => ap.AvgRating = rating[ap.ID]);
+            _context.SaveChanges();
+            ViewData["ApartmentReviewCounter"] = reviewCounter;
+            apartments = apartments.OrderByDescending(ap => ap.AvgRating);
+            return View(await apartments.AsNoTracking().ToListAsync());
         }
 
         // GET: Apartments/Details/5

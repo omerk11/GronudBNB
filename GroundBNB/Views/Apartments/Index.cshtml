@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    Dictionary<int, int> reviewCount = (Dictionary<int, int>)ViewData["ApartmentReviewCounter"];
 }
 
 <h1>Find Your Dream Vacation Apartment!</h1>
@@ -65,20 +66,9 @@
                 </td>
                 <td>
                     @{
-                        float rating = 0;
-                        int count = 0;
-                        foreach (Reservation res in item.Reservations)
-                        {
-                            if (res.Rating.HasValue)
-                            {
-                                rating += res.Rating.Value;
-                                count++;
-                            }
-                        }
-                        rating /= count;
-                        if (count > 0)
-                        {
-                            <a><h6>@rating Stars!</h6>(@count Reviews)</a>
+                        if (reviewCount[item.ID] > 0)
+                        {//add a link to all reviews rating[item.ID]
+                            <a><h6>@item.AvgRating Stars!</h6>(@reviewCount[item.ID] Reviews)</a>
                         }
                         else
                         {
