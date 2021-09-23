@@ -2,13 +2,38 @@
 
 @{
     ViewData["Title"] = "Index";
+    Dictionary<int, int> reviewCount = (Dictionary<int, int>)ViewData["ApartmentReviewCounter"];
 }
 
-<h1>Index</h1>
+<h1>Find Your Dream Vacation Apartment!</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <h5>Find Apartment By Title:</h5> <input type="text" name="searchName" value="@ViewData["NameFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </p>
+    </div>
+
+</form>
+<br />
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <h5>Find Apartment By City:</h5> <input type="text" name="searchCity" value="@ViewData["CityFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </p>
+    </div>
+    <a class="btn-sm btn-danger" asp-action="Index">Clear Search</a>
+</form>
+
+
+
 <table class="table">
     <thead>
         <tr>
@@ -16,74 +41,64 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Address
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumOfRooms)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PricePerDay)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Street)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Floor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApartmentNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaxNumOfGuests)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApartmentOwner)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumOfRooms)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PricePerDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Street)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Floor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApartmentNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxNumOfGuests)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApartmentOwner.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <h5>
+                        <a asp-action="Details" asp-route-id="@item.ID" style="">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                    </h5><br />
+
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+
+                    <h6>City: </h6>@Html.DisplayFor(modelItem => item.City)<br />
+                    <h6>St: </h6> @Html.DisplayFor(modelItem => item.Street)<br />
+                    <h6>Floor: </h6> @Html.DisplayFor(modelItem => item.Floor)<br />
+                    <h6>Apartment Number: </h6> @Html.DisplayFor(modelItem => item.ApartmentNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumOfRooms)
+                </td>
+                <td>
+                    Fit For @Html.DisplayFor(modelItem => item.MaxNumOfGuests) Guests
+                </td>
+                <td>
+                    <h6>$@Html.DisplayFor(modelItem => item.PricePerDay)</h6>/Day
+                </td>
+                <td>
+                    @{
+                        if (reviewCount[item.ID] > 0)
+                        {//add a link to all reviews
+                            <a><h6>@item.AvgRating Stars!</h6>(@reviewCount[item.ID] Reviews)</a>
+                        }
+                        else
+                        {
+                            <a>UnRated</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -20,10 +20,80 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Apartments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity)
         {
-            var siteContext = _context.Apartments.Include(a => a.ApartmentOwner);
-            return View(await siteContext.ToListAsync());
+            var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap;
+
+            //Calculate rating for each apartment
+            Dictionary<int, float> rating = new Dictionary<int, float>();
+            Dictionary<int, int> reviewCounter = new Dictionary<int, int>();
+            foreach (Apartment ap in apartments)
+            {
+                rating[ap.ID] = 0;
+                reviewCounter[ap.ID] = 0;
+                foreach (Reservation res in ap.Reservations)
+                {
+                    if (res.Rating.HasValue)
+                    {
+                        rating[ap.ID] += res.Rating.Value;
+                        reviewCounter[ap.ID] += 1;
+                    }
+                }
+                if (reviewCounter[ap.ID] != 0)
+                {
+                    rating[ap.ID] /= reviewCounter[ap.ID];
+                }
+            }
+            apartments.ToList().ForEach(ap => ap.AvgRating = rating[ap.ID]);
+            _context.SaveChanges();
+            ViewData["ApartmentReviewCounter"] = reviewCounter;
+
+            //Sort and search apartments
+            ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
+            ViewData["NumOfGuestsSortParm"] = sortOrder == "guests" ? "guests_desc" : "guests";
+            ViewData["RoomsSortParm"] = sortOrder == "rooms" ? "rooms_desc" : "rooms";
+            ViewData["RatingSortParm"] = sortOrder == "rating" ? "rating_desc" : "rating";
+            ViewData["NameFilter"] = searchName;
+            ViewData["CityFilter"] = searchCity;
+
+            if (!String.IsNullOrEmpty(searchName))
+            {
+                apartments = apartments.Where(ap => ap.Title.Contains(searchName) || ap.Description.Contains(searchName));
+            }
+            if (!String.IsNullOrEmpty(searchCity))
+            {
+                apartments = apartments.Where(ap => ap.City.Contains(searchCity));
+            }
+            switch (sortOrder)
+            {
+                case "price":
+                    apartments = apartments.OrderBy(ap => ap.PricePerDay);
+                    break;
+                case "price_desc":
+                    apartments = apartments.OrderByDescending(ap => ap.PricePerDay);
+                    break;
+                case "guests":
+                    apartments = apartments.OrderBy(ap => ap.MaxNumOfGuests);
+                    break;
+                case "guests_desc":
+                    apartments = apartments.OrderByDescending(ap => ap.MaxNumOfGuests);
+                    break;
+                case "rooms":
+                    apartments = apartments.OrderBy(ap => ap.NumOfRooms);
+                    break;
+                case "rooms_desc":
+                    apartments = apartments.OrderByDescending(ap => ap.NumOfRooms);
+                    break;
+                case "rating":
+                    apartments = apartments.OrderBy(ap => ap.AvgRating);
+                    break;
+                case "rating_desc":
+                default:
+                    apartments = apartments.OrderByDescending(ap => ap.AvgRating);
+                    break;
+            }
+
+            return View(await apartments.AsNoTracking().ToListAsync());
         }
 
         // GET: Apartments/Details/5
