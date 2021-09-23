@@ -10,6 +10,30 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <h5>Find Apartment By Title:</h5> <input type="text" name="searchName" value="@ViewData["NameFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </p>
+    </div>
+
+</form>
+<br />
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <h5>Find Apartment By City:</h5> <input type="text" name="searchCity" value="@ViewData["CityFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </p>
+    </div>
+    <a class="btn-sm btn-danger" asp-action="Index">Clear Search</a>
+</form>
+
+
+
 <table class="table">
     <thead>
         <tr>
@@ -20,19 +44,17 @@
                 Address
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]">Rating</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
             </th>
-
-            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -75,11 +97,6 @@
                             <a>UnRated</a>
                         }
                     }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                 </td>
             </tr>
         }

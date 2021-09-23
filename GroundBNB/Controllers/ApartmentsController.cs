@@ -20,7 +20,7 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Apartments
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity)
         {
             var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap;
 
@@ -48,14 +48,24 @@ namespace GroundBNB.Controllers
             _context.SaveChanges();
             ViewData["ApartmentReviewCounter"] = reviewCounter;
 
-            //Sort apartments
+            //Sort and search apartments
             ViewData["PriceSortParm"] = sortOrder == "price" ? "price_desc" : "price";
             ViewData["NumOfGuestsSortParm"] = sortOrder == "guests" ? "guests_desc" : "guests";
             ViewData["RoomsSortParm"] = sortOrder == "rooms" ? "rooms_desc" : "rooms";
             ViewData["RatingSortParm"] = sortOrder == "rating" ? "rating_desc" : "rating";
+            ViewData["NameFilter"] = searchName;
+            ViewData["CityFilter"] = searchCity;
+
+            if (!String.IsNullOrEmpty(searchName))
+            {
+                apartments = apartments.Where(ap => ap.Title.Contains(searchName) || ap.Description.Contains(searchName));
+            }
+            if (!String.IsNullOrEmpty(searchCity))
+            {
+                apartments = apartments.Where(ap => ap.City.Contains(searchCity));
+            }
             switch (sortOrder)
             {
-                
                 case "price":
                     apartments = apartments.OrderBy(ap => ap.PricePerDay);
                     break;
@@ -82,7 +92,7 @@ namespace GroundBNB.Controllers
                     apartments = apartments.OrderByDescending(ap => ap.AvgRating);
                     break;
             }
-            
+
             return View(await apartments.AsNoTracking().ToListAsync());
         }
 
