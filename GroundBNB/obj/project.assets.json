@@ -7179,24 +7179,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ido Rosenberger\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Morris Kabariti\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Code\\Colman\\App Dev\\GronudBNB\\GroundBNB\\GroundBNB.csproj",
+      "projectUniqueName": "C:\\project\\GronudBNB\\GroundBNB\\GroundBNB.csproj",
       "projectName": "GroundBNB",
-      "projectPath": "D:\\Code\\Colman\\App Dev\\GronudBNB\\GroundBNB\\GroundBNB.csproj",
-      "packagesPath": "C:\\Users\\Ido Rosenberger\\.nuget\\packages\\",
-      "outputPath": "D:\\Code\\Colman\\App Dev\\GronudBNB\\GroundBNB\\obj\\",
+      "projectPath": "C:\\project\\GronudBNB\\GroundBNB\\GroundBNB.csproj",
+      "packagesPath": "C:\\Users\\Morris Kabariti\\.nuget\\packages\\",
+      "outputPath": "C:\\project\\GronudBNB\\GroundBNB\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Ido Rosenberger\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Morris Kabariti\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
