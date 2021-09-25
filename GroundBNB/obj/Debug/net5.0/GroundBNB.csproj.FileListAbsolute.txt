@@ -357,3 +357,8 @@ D:\Code\Colman\App Dev\GronudBNB\GroundBNB\obj\Debug\net5.0\Razor\Views\Reservat
 D:\Code\Colman\App Dev\GronudBNB\GroundBNB\obj\Debug\net5.0\Razor\Views\Reservations\Details.cshtml.g.cs
 D:\Code\Colman\App Dev\GronudBNB\GroundBNB\obj\Debug\net5.0\Razor\Views\Reservations\Edit.cshtml.g.cs
 D:\Code\Colman\App Dev\GronudBNB\GroundBNB\obj\Debug\net5.0\Razor\Views\Reservations\Index.cshtml.g.cs
+C:\Users\omerk\source\repos\Project\GronudBNB\GroundBNB\obj\Debug\net5.0\Razor\Views\Reservations\Create.cshtml.g.cs
+C:\Users\omerk\source\repos\Project\GronudBNB\GroundBNB\obj\Debug\net5.0\Razor\Views\Reservations\Delete.cshtml.g.cs
+C:\Users\omerk\source\repos\Project\GronudBNB\GroundBNB\obj\Debug\net5.0\Razor\Views\Reservations\Details.cshtml.g.cs
+C:\Users\omerk\source\repos\Project\GronudBNB\GroundBNB\obj\Debug\net5.0\Razor\Views\Reservations\Edit.cshtml.g.cs
+C:\Users\omerk\source\repos\Project\GronudBNB\GroundBNB\obj\Debug\net5.0\Razor\Views\Reservations\Index.cshtml.g.cs

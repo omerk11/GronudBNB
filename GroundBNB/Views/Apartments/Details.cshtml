@@ -73,6 +73,77 @@
     </dl>
 </div>
 <div>
+    <style>
+        #map {
+            height: 400px;
+            width: 400px;
+        }
+    </style>
+    <div id="map"></div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-remote-config.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyB_-wogOV_Nlx16tl6bebvw-uqNpe38CRk",
+            authDomain: "groundbnb-308a5.firebaseapp.com",
+            projectId: "groundbnb-308a5",
+            storageBucket: "groundbnb-308a5.appspot.com",
+            messagingSenderId: "671434416272",
+            appId: "1:671434416272:web:d9d1ef9710dbf2aa98b815",
+            measurementId: "G-C0QWDTRD28"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+    <script>
+        // Loading API Key for Google Maps API from remote config
+        const remoteConfig = firebase.remoteConfig();
+        remoteConfig.settings.minimumFetchIntervalMillis = 3600000;
+        remoteConfig.fetchAndActivate()
+            .then(() => {
+                window.apiKey = remoteConfig.getString("GoogleMapsAPIKey");
+                let script = document.createElement('script');
+                script.src = 'https://maps.googleapis.com/maps/api/js?key=' + remoteConfig.getString("GoogleMapsAPIKey") +
+                    '&callback=initMap&libraries=places';
+                script.async = true;
+                document.body.appendChild(script);
+            }).catch((err) => {
+                console.error(err);
+            });
+    </script>
+    <script>
+        function initMap() {
+            var address = '@Model.City' + '+' + '@Model.Street';
+            var lat, lng, latlang;
+            address.replace(" ", "+");
+            var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=' + window.apiKey;
+            $.getJSON(url, function (data) {
+                lat = data['results'][0]["geometry"]["location"]["lat"];
+                lng = data['results'][0]["geometry"]["location"]["lng"];
+                latlang = new google.maps.LatLng(lat, lng)
+                const options = {
+                    zoom: 13,
+                    center: latlang
+                };
+                var map = new google.maps.Map(document.getElementById('map'), options);
+                var marker = new google.maps.Marker({
+                    position: latlang,
+                    map: map
+                });
+            });
+        }
+    </script>
+</div>
+<div>
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
