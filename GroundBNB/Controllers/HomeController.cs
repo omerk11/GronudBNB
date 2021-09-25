@@ -1,26 +1,86 @@
-﻿using GroundBNB.Models;
+﻿using GroundBNB.Data;
+using GroundBNB.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.Web.CodeGeneration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GroundBNB.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly SiteContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(SiteContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet("denied")]
+        public IActionResult Denied()
+        {
+            return View();
+        }
+
+        [Authorize(Roles ="Admin")]
+        public IActionResult Secured()
+        {
+            return View();
+        }
+
+        [HttpGet("login")]
+        public IActionResult Login(string returnUrl)
+            
+        {
+            //ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> ValidateAsync(string username, string password, string returnUrl)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == username);
+           
+            //ViewData["ReturnUrl"] = returnUrl;
+            if(user!=null && password==user.Password)
+            {
+                //claim = properties for user
+                var claims = new List<Claim>();
+                claims.Add(new Claim("username", username));
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, username));
+                claims.Add(new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName));
+                if (user.IsAdmin)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                }
+                var clainsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimsPrincipal = new ClaimsPrincipal(clainsIdentity);
+                await HttpContext.SignInAsync(claimsPrincipal);
+                return Redirect("/");
+            }
+            TempData["Error"] = "Error. Usserame or password are incorrect";
+            return View("login");
+        }
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return Redirect("/");
+
         }
 
         public IActionResult Privacy()
