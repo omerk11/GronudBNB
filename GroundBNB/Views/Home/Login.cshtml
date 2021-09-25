@@ -1,5 +1,5 @@
 ﻿
-@*@{
+@{
     ViewData["Title"] = "Login";
     var returnUrl = ViewData["ReturnUrl"] as string;
     var error = TempData["Error"] as string;
@@ -11,7 +11,7 @@
     <h2 class="alert-danger" style="padding:20px;">@error</h2>
 
 }
-<form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
+@*<form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
     <input type="text" name="username" placeholder="Username"/>
     <input type="password" name="password" placeholder="password" />
     <input type="submit" value="login" />
@@ -118,12 +118,12 @@
 <body>
     <div id="login">
         <h1><strong>Welcome.</strong> Please login.</h1>
-        <form action="javascript:void(0);" method="get">
+        <form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
             <fieldset>
-                <p><input type="text" required value="Username" onBlur="if(this.value=='')this.value='Username'" onFocus="if(this.value=='Username')this.value='' "></p>
-                <p><input type="password" required value="Password" onBlur="if(this.value=='')this.value='Password'" onFocus="if(this.value=='Password')this.value='' "></p>
+                <p><input type="text" name="username" placeholder="Email" onBlur="if(this.value=='')this.value='Username'" onFocus="if(this.value=='Username')this.value='' "></p>
+                <p><input type="password" name="password" placeholder="Password" onBlur="if(this.value=='')this.value='Password'" onFocus="if(this.value=='Password')this.value='' "></p>
                 <p><a href="#">Forgot Password?</a></p>
-                <p><input type="submit" value="Login"></p>
+                <p><input type="submit" value="login"></p>
             </fieldset>
         </form>
     </div> <!-- end login -->

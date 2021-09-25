@@ -72,7 +72,7 @@ namespace GroundBNB.Controllers
                 await HttpContext.SignInAsync(claimsPrincipal);
                 return Redirect("/");
             }
-            TempData["Error"] = "Error. Usserame or password are incorrect";
+            TempData["Error"] = "Error. User Name or password are incorrect";
             return View("login");
         }
         [Authorize]
