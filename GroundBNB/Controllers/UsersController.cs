@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GroundBNB.Data;
 using GroundBNB.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroundBNB.Controllers
 {
@@ -20,12 +21,14 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Users
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Users.ToListAsync());
         }
 
         // GET: Users/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -66,6 +69,7 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Users/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +90,7 @@ namespace GroundBNB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Age,PhoneNumber,Email,Password,IsAdmin")] User user)
         {
             if (id != user.ID)
@@ -117,6 +122,7 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +143,7 @@ namespace GroundBNB.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -145,6 +152,7 @@ namespace GroundBNB.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.ID == id);

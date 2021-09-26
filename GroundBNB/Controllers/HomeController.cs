@@ -59,10 +59,14 @@ namespace GroundBNB.Controllers
             if(user!=null && password==user.Password)
             {
                 //claim = properties for user
+                //var identity = new ClaimsIdentity();
                 var claims = new List<Claim>();
                 claims.Add(new Claim("username", username));
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, username));
                 claims.Add(new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName));
+                claims.Add(new Claim(ClaimTypes.Email, user.Email));
+                
+
                 if (user.IsAdmin)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "Admin"));
