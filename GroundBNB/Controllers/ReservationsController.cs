@@ -31,11 +31,10 @@ namespace GroundBNB.Controllers
             }
             else if (User.Identity.IsAuthenticated)
             {
-                var username = User.Identity.Name;
-                
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.FirstName + " " + u.LastName == username);
-                var siteContext = await _context.Reservations.FirstOrDefaultAsync(r => r.GuestID == user.ID);
-                return View(siteContext);
+                var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+                var reservations = from res in _context.Reservations where res.GuestID.ToString() == userID.Value select res;
+                return View(await reservations.ToListAsync());
+
             }
             else
             {
