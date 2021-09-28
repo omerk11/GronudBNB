@@ -41,15 +41,15 @@ namespace GroundBNB
                 {
                     OnSigningIn = async context =>
                     {
-                        var principal = context.Principal;
-                        if(principal.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
-                        {
-                            if(principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == "tal")
-                            {
-                                var claimsIdentity = principal.Identity as ClaimsIdentity;
-                                claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-                            }
-                        }
+                        //var principal = context.Principal;
+                        //if(principal.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
+                        //{
+                        //    if(principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value == "tal")
+                        //    {
+                        //        var claimsIdentity = principal.Identity as ClaimsIdentity;
+                        //        claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+                        //    }
+                        //}
                         await Task.CompletedTask;
                     },
                     OnSignedIn = async context =>
