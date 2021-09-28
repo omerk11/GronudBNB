@@ -29,6 +29,10 @@
             <input type="submit" value="Search" class="btn btn-primary" />
         </p>
     </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a class="btn-sm btn-info" asp-action="Index" asp-route-myAps ="@true">My Apartments</a>
+    }
     <a class="btn-sm btn-danger" asp-action="Index">Clear Search</a>
 </form>
 

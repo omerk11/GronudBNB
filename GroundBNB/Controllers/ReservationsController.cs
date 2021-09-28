@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GroundBNB.Data;
 using GroundBNB.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroundBNB.Controllers
 {
@@ -20,10 +21,25 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Reservations
+
         public async Task<IActionResult> Index()
         {
-            var siteContext = _context.Reservations.Include(r => r.Apartment).Include(r => r.Guest);
-            return View(await siteContext.ToListAsync());
+            if (User.IsInRole("Admin"))
+            { 
+                var siteContext = _context.Reservations.Include(r => r.Apartment).Include(r => r.Guest);
+                return View(await siteContext.ToListAsync());
+            }
+            else if (User.Identity.IsAuthenticated)
+            {
+                var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+                var reservations = from res in _context.Reservations where res.GuestID.ToString() == userID.Value select res;
+                return View(await reservations.ToListAsync());
+
+            }
+            else
+            {
+               return Redirect("/login");
+            }
         }
 
         // GET: Reservations/Details/5
@@ -73,6 +89,7 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Reservations/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,6 +112,7 @@ namespace GroundBNB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Rating,Review,NumberOfGuests,StartDate,EndDate,PurchseDate,ApartmentID,GuestID")] Reservation reservation)
         {
             if (id != reservation.ID)
@@ -128,6 +146,7 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Reservations/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -150,6 +169,7 @@ namespace GroundBNB.Controllers
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var reservation = await _context.Reservations.FindAsync(id);
