@@ -59,6 +59,30 @@ namespace GroundBNB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Age,PhoneNumber,Email,Password,IsAdmin")] User user)
         {
+            user.IsAdmin = false;
+            //check if user exists
+            string error = "";
+            foreach(User u in _context.Users)
+            {
+                if (u.ID == user.ID)
+                {
+                    error += "User Id Already Exists. ";
+                }
+                if (u.Email == user.Email)
+                {
+                    error += "User Email Already Exists. ";
+                }
+                if (u.PhoneNumber == user.PhoneNumber)
+                {
+                    error += "User Phone Number Already Exists. ";
+                }
+            }
+            if (!String.IsNullOrEmpty(error))
+            {
+                TempData["RegisterError"] = error;
+                return View("Create");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(user);
