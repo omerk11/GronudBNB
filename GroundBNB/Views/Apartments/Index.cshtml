@@ -3,35 +3,36 @@
 @{
     ViewData["Title"] = "Index";
     Dictionary<int, int> reviewCount = (Dictionary<int, int>)ViewData["ApartmentReviewCounter"];
+    var error = TempData["Error"] as string;
+    var startDate = ViewData["StartDateFilter"] as string;
+    var endDate = ViewData["EndDateFilter"] as string;
+}
 }
 
 <h1>Find Your Dream Vacation Apartment!</h1>
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <h2 class="alert-danger" style="padding:20px;">@error</h2>
+}
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 
-
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
-        <p>
-            <h5>Find Apartment By Title:</h5> <input type="text" name="searchName" value="@ViewData["NameFilter"]" />
-            <input type="submit" value="Search" class="btn btn-primary" />
-        </p>
-    </div>
 
-</form>
-<br />
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            <h5>Find Apartment By City:</h5> <input type="text" name="searchCity" value="@ViewData["CityFilter"]" />
-            <input type="submit" value="Search" class="btn btn-primary" />
-        </p>
+        <h5>Find Apartment By Title:</h5> <input type="text" name="searchName" value="@ViewData["NameFilter"]" />
+        <h5>Find Apartment By City:</h5> <input type="text" name="searchCity" value="@ViewData["CityFilter"]" />
+        <h5>Start Date:</h5><input type="date" name="startDate" value="@startDate" />
+        <h5>End Date:</h5><input type="date" name="endDate" value="@endDate" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+
     </div>
     @if (User.Identity.IsAuthenticated)
     {
-        <a class="btn-sm btn-info" asp-action="Index" asp-route-myAps ="@true">My Apartments</a>
+        <a class="btn-sm btn-info" asp-action="Index" asp-route-myAps="@true">My Apartments</a>
     }
     <a class="btn-sm btn-danger" asp-action="Index">Clear Search</a>
 </form>
@@ -58,6 +59,9 @@
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
+            </th>
+            <th>
+                Actions
             </th>
         </tr>
     </thead>
@@ -101,6 +105,17 @@
                             <a>UnRated</a>
                         }
                     }
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-action="AddRes" asp-route-id="@item.ID">Add Reservation</a>
+                    }
+                    else
+                    {
+                        <p>Log In To Reserve</p>
+                    }
+
                 </td>
             </tr>
         }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GroundBNB.Data;
 using GroundBNB.Models;
+using System.Globalization;
 
 namespace GroundBNB.Controllers
 {
@@ -20,15 +21,15 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Apartments
-        public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity, bool myAps = false)
+        public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity, DateTime? startDate, DateTime? endDate, bool myAps = false)
         {
-            var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap; ;
-            if(myAps)
+            var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap;
+            if (myAps)
             {
                 var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
                 apartments = from ap in apartments where ap.ApartmentOwnerID.ToString() == userID.Value select ap;
             }
-           
+
             //Calculate rating for each apartment
             Dictionary<int, float> rating = new Dictionary<int, float>();
             Dictionary<int, int> reviewCounter = new Dictionary<int, int>();
@@ -60,6 +61,14 @@ namespace GroundBNB.Controllers
             ViewData["RatingSortParm"] = sortOrder == "rating" ? "rating_desc" : "rating";
             ViewData["NameFilter"] = searchName;
             ViewData["CityFilter"] = searchCity;
+            if(startDate!= null)
+            {
+                ViewData["StartDateFilter"] = startDate.Value.ToString("yyyy-MM-dd");
+            }
+            if (endDate != null)
+            {
+                ViewData["EndDateFilter"] = endDate.Value.ToString("yyyy-MM-dd");
+            }
 
             if (!String.IsNullOrEmpty(searchName))
             {
@@ -69,6 +78,12 @@ namespace GroundBNB.Controllers
             {
                 apartments = apartments.Where(ap => ap.City.Contains(searchCity));
             }
+            if (startDate != null && endDate != null)
+            {
+                apartments = apartments.Where(ap => !(ap.Reservations.FirstOrDefault(r => startDate.Value < r.EndDate) != null
+                                                && ap.Reservations.FirstOrDefault(r => endDate.Value > r.StartDate) != null));
+            }
+
             switch (sortOrder)
             {
                 case "price":
@@ -97,9 +112,24 @@ namespace GroundBNB.Controllers
                     apartments = apartments.OrderByDescending(ap => ap.AvgRating);
                     break;
             }
-
+            if (startDate >= endDate)
+            {
+                TempData["Error"] = "Error. Dates are incorrect";
+                //return View(await apartments.AsNoTracking().ToListAsync());
+            }
             return View(await apartments.AsNoTracking().ToListAsync());
         }
+        //private bool isApartmentAvailable(Apartment ap, DateTime? startDate, DateTime? endDate)
+        //{
+        //    foreach(Reservation res in ap.Reservations)
+        //    {
+        //        if(startDate < res.EndDate && res.StartDate < endDate)
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    return true;
+        //}
 
         // GET: Apartments/Details/5
         public async Task<IActionResult> Details(int? id)
