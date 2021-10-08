@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@using System.Text.RegularExpressions
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,14 +29,17 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                        </li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                            </li>
                         }
                         @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">Reservations</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">Reservations</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="MyApartments" asp-route-myAps="@true">My Apartments</a>
+                            </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -53,6 +57,7 @@
                                 </button>
                             </li>
                             <li class="nav-item">
+
                                 <button type="button" class="btn-info btn">
                                     <a type="button" class="nav-link text-dark btn-info btn-xs" asp-area="" asp-controller="Users" asp-action="Create">SignIn</a>
                                 </button>
@@ -60,6 +65,14 @@
                         }
                         else
                         {
+                            var userID = @User.Claims.FirstOrDefault(c => c.Type == "ID").ToString().Replace("ID: ", "");
+
+                            <li class="nav-item">
+                                <button type="button" class="btn-info btn">
+
+                                    <a type="button" class="nav-link text-dark btn-info btn-xs" asp-area="" asp-controller="Users" asp-action="Edit_user" asp-route-id="@userID">Edit</a>
+                                </button>
+                            </li>
                             <li class="nav-item">
                                 <button type="button" class="btn-danger btn">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>

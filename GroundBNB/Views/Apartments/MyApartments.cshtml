@@ -1,0 +1,86 @@
+﻿@model IEnumerable<GroundBNB.Models.Apartment>
+
+@{
+    ViewData["Title"] = "Index";
+    Dictionary<int, int> reviewCount = (Dictionary<int, int>)ViewData["ApartmentReviewCounter"];
+}
+
+<h1>My Apartments!</h1>
+
+
+    @*@if (User.Identity.IsAuthenticated)
+    {
+        <a class="btn-sm btn-info" asp-action="Index" asp-route-myAps="@true">My Apartments</a>
+    }
+    <a class="btn-sm btn-danger" asp-action="Index">Clear Search</a>*@
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <h5>
+                        <a asp-action="Details" asp-route-id="@item.ID" style="">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                    </h5><br />
+
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+
+                    <h6>City: </h6>@Html.DisplayFor(modelItem => item.City)<br />
+                    <h6>St: </h6> @Html.DisplayFor(modelItem => item.Street)<br />
+                    <h6>Floor: </h6> @Html.DisplayFor(modelItem => item.Floor)<br />
+                    <h6>Apartment Number: </h6> @Html.DisplayFor(modelItem => item.ApartmentNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumOfRooms)
+                </td>
+                <td>
+                    Fit For @Html.DisplayFor(modelItem => item.MaxNumOfGuests) Guests
+                </td>
+                <td>
+                    <h6>$@Html.DisplayFor(modelItem => item.PricePerDay)</h6>/Day
+                </td>
+                <td>
+                    @{
+                        if (reviewCount[item.ID] > 0)
+                        {//add a link to all reviews
+                            <a><h6>@item.AvgRating Stars!</h6>(@reviewCount[item.ID] Reviews)</a>
+                        }
+                        else
+                        {
+                            <a>UnRated</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
