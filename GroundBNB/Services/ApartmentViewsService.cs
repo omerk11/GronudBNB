@@ -20,7 +20,7 @@ namespace GroundBNB.Services
         public void Increment(int id)
         {
             DateTime today = DateTime.Now.Date;
-            ApartmentViews entity = this._context.ApartmentViews.Where(x => x.Date.Date.Equals(today) && x.AparatmentID == id).FirstOrDefault();
+            ApartmentViews entity = this._context.ApartmentViews.Where(x => x.Date.Date.Equals(today) && x.ApartmentID == id).FirstOrDefault();
             if (entity != null)
             {
                 entity.Views += 1;
@@ -33,7 +33,7 @@ namespace GroundBNB.Services
                 {
                     Views = 1,
                     Date = today,
-                    AparatmentID = id
+                    ApartmentID = id
                 };
                 this._context.ApartmentViews.Add(entity);
                 this._context.Entry(entity).State = EntityState.Added;
@@ -44,7 +44,7 @@ namespace GroundBNB.Services
 
         public List<ApartmentViews> GetApartmentsViews(int id)
         {
-            return this._context.ApartmentViews.Where(x => x.AparatmentID == id).ToList();
+            return this._context.ApartmentViews.Where(x => x.ApartmentID == id).ToList();
         }
 
     }
