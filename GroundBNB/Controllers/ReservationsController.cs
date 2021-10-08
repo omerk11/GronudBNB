@@ -8,22 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using GroundBNB.Data;
 using GroundBNB.Models;
 using Microsoft.AspNetCore.Authorization;
+using GroundBNB.Services;
 
 namespace GroundBNB.Controllers
 {
     public class ReservationsController : Controller
     {
         private readonly SiteContext _context;
+        private readonly ISiteViewsService _siteviews;
 
-        public ReservationsController(SiteContext context)
+        public ReservationsController(SiteContext context, ISiteViewsService siteViews)
         {
             _context = context;
+            _siteviews = siteViews;
         }
 
         // GET: Reservations
 
         public async Task<IActionResult> Index()
         {
+            this._siteviews.Increment();
+
             if (User.IsInRole("Admin"))
             { 
                 var siteContext = _context.Reservations.Include(r => r.Apartment).Include(r => r.Guest);
@@ -45,6 +50,8 @@ namespace GroundBNB.Controllers
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            this._siteviews.Increment();
+
             if (id == null)
             {
                 return NotFound();

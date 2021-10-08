@@ -1,5 +1,6 @@
 ﻿using GroundBNB.Data;
 using GroundBNB.Models;
+using GroundBNB.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -21,13 +22,18 @@ namespace GroundBNB.Controllers
     {
         private readonly SiteContext _context;
 
-        public HomeController(SiteContext context)
+        private readonly ISiteViewsService _siteviews;
+
+        public HomeController(SiteContext context, ISiteViewsService siteViews)
         {
             _context = context;
+            _siteviews = siteViews;
         }
+
 
         public IActionResult Index()
         {
+            this._siteviews.Increment();
             return View();
         }
 

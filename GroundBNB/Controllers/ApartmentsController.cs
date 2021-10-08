@@ -7,21 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GroundBNB.Data;
 using GroundBNB.Models;
+using GroundBNB.Services;
 
 namespace GroundBNB.Controllers
 {
     public class ApartmentsController : Controller
     {
         private readonly SiteContext _context;
+        private readonly ISiteViewsService _siteviews;
+        private readonly IApartmentViewsService _apartmentviews;
 
-        public ApartmentsController(SiteContext context)
+        public ApartmentsController(SiteContext context, ISiteViewsService siteViews, IApartmentViewsService apartmentViews)
         {
             _context = context;
+            _siteviews = siteViews;
+            _apartmentviews = apartmentViews;
         }
 
         // GET: Apartments
         public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity, bool myAps = false)
         {
+            this._siteviews.Increment();
             var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap; ;
             if(myAps)
             {
@@ -104,6 +110,8 @@ namespace GroundBNB.Controllers
         // GET: Apartments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            this._siteviews.Increment();
+            this._apartmentviews.Increment(id.Value);
             if (id == null)
             {
                 return NotFound();

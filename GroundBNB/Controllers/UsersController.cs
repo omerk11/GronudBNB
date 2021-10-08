@@ -8,22 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using GroundBNB.Data;
 using GroundBNB.Models;
 using Microsoft.AspNetCore.Authorization;
+using GroundBNB.Services;
 
 namespace GroundBNB.Controllers
 {
     public class UsersController : Controller
     {
         private readonly SiteContext _context;
+        private readonly ISiteViewsService _siteviews;
 
-        public UsersController(SiteContext context)
+        public UsersController(SiteContext context, ISiteViewsService siteViews)
         {
             _context = context;
+            _siteviews = siteViews;
         }
 
         // GET: Users
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
+            this._siteviews.Increment();
+
             return View(await _context.Users.ToListAsync());
         }
 
@@ -31,6 +36,8 @@ namespace GroundBNB.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
+            this._siteviews.Increment();
+
             if (id == null)
             {
                 return NotFound();
@@ -49,6 +56,8 @@ namespace GroundBNB.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
+            this._siteviews.Increment();
+
             return View();
         }
 

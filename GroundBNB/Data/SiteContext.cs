@@ -16,6 +16,8 @@ namespace GroundBNB.Data
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<SiteViews> SiteViews { get; set; }
+        public DbSet<ApartmentViews> ApartmentViews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
