@@ -6,7 +6,12 @@
     @if (User.Identity.IsAuthenticated)
     {
         <h1 class="display-4">Welcome @User.Identity.Name</h1>
-        
+        var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+        var Email = User.Claims.FirstOrDefault(c => c.Type == "emailaddress");
+        var good = User.Claims.Where(c => c.Type == "emailaddress");
+        <h1 class="display-4">Welcome @userID</h1>
+        <h1 class="display-4">Welcome @good</h1>
+
 
     }
 
