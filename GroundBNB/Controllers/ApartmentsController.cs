@@ -107,6 +107,42 @@ namespace GroundBNB.Controllers
             return View(await apartments.AsNoTracking().ToListAsync());
         }
 
+        public async Task<IActionResult> MyApartments(string sortOrder, string searchName, string searchCity, bool myAps = true)
+        {
+            var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap; ;
+            if (myAps)
+            {
+                var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+                apartments = from ap in apartments where ap.ApartmentOwnerID.ToString() == userID.Value select ap;
+            }
+
+            //Calculate rating for each apartment
+            Dictionary<int, float> rating = new Dictionary<int, float>();
+            Dictionary<int, int> reviewCounter = new Dictionary<int, int>();
+            foreach (Apartment ap in apartments)
+            {
+                rating[ap.ID] = 0;
+                reviewCounter[ap.ID] = 0;
+                foreach (Reservation res in ap.Reservations)
+                {
+                    if (res.Rating.HasValue)
+                    {
+                        rating[ap.ID] += res.Rating.Value;
+                        reviewCounter[ap.ID] += 1;
+                    }
+                }
+                if (reviewCounter[ap.ID] != 0)
+                {
+                    rating[ap.ID] /= reviewCounter[ap.ID];
+                }
+            }
+            apartments.ToList().ForEach(ap => ap.AvgRating = rating[ap.ID]);
+            _context.SaveChanges();
+            ViewData["ApartmentReviewCounter"] = reviewCounter;
+
+            return View(await apartments.AsNoTracking().ToListAsync());
+        }
+
         // GET: Apartments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -143,6 +179,31 @@ namespace GroundBNB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Title,Description,NumOfRooms,PricePerDay,City,Street,Floor,ApartmentNumber,MaxNumOfGuests,ApartmentOwnerID")] Apartment apartment)
         {
+            if (ModelState.IsValid)
+            {
+                _context.Add(apartment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ApartmentOwnerID"] = new SelectList(_context.Users, "ID", "Email", apartment.ApartmentOwnerID);
+            return View(apartment);
+        }
+
+        // GET: Apartments/Create_New
+        public IActionResult Create_New()
+        {
+            ViewData["ApartmentOwnerID"] = new SelectList(_context.Users, "ID", "Email");
+            return View();
+        }
+
+        // POST: Apartments/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create_New([Bind("ID,Title,Description,NumOfRooms,PricePerDay,City,Street,Floor,ApartmentNumber,MaxNumOfGuests,ApartmentOwnerID")] Apartment apartment)
+        {
+           
             if (ModelState.IsValid)
             {
                 _context.Add(apartment);

@@ -73,9 +73,6 @@ namespace GroundBNB.Controllers
                 claims.Add(new Claim(ClaimTypes.Email, user.Email));
                 claims.Add(new Claim("ID", user.ID.ToString()));
 
-
-
-
                 if (user.IsAdmin)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "Admin"));
