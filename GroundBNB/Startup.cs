@@ -1,4 +1,5 @@
 using GroundBNB.Data;
+using GroundBNB.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,8 @@ namespace GroundBNB
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddControllersWithViews();
+            services.AddTransient<ISiteViewsService, SiteViewsService>();
+            services.AddTransient<IApartmentViewsService, ApartmentViewsService>();
 
             //auth
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>

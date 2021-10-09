@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GroundBNB.Models
@@ -34,8 +35,13 @@ namespace GroundBNB.Models
         public int MaxNumOfGuests { get; set; }
         public float? AvgRating { get; set; }
         [Required(ErrorMessage = "Owner ID required")]
-        public int ApartmentOwnerID { get; set; }   
+        public int ApartmentOwnerID { get; set; } 
+        
+        [JsonIgnore]
         public User ApartmentOwner { get; set; }
+
+        public ICollection<ApartmentViews> ApartmentsViews { get; set; }
+        [JsonIgnore]
         public ICollection<Reservation> Reservations { get; set; }
     }
 }
