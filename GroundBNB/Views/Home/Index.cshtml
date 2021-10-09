@@ -6,10 +6,12 @@
     @if (User.Identity.IsAuthenticated)
     {
         <h1 class="display-4">Welcome @User.Identity.Name</h1>
+        var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+
     }
 
     else
     {
         <h1 class="display-4">Welcome </h1>
     }
-    </div>
+</div>

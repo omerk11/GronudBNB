@@ -2,6 +2,11 @@
 
 @{
     ViewData["Title"] = "Create";
+    var startDate = ViewData["StartDateFilter"] as string;
+    var endDate = ViewData["EndDateFilter"] as string;
+    var apID = ViewData["ApartmentID"];
+    var userID = User.Claims.FirstOrDefault(c => c.Type == "ID").Value;
+    
 }
 
 <h1>Create</h1>
@@ -13,6 +18,21 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="NumberOfGuests" class="control-label"></label>
+                <input asp-for="NumberOfGuests" class="form-control" />
+                <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input readonly asp-for="StartDate" class="form-control" value="@startDate" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input readonly asp-for="EndDate" class="form-control" value="@endDate" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>
                 <input asp-for="Rating" class="form-control" />
                 <span asp-validation-for="Rating" class="text-danger"></span>
@@ -22,34 +42,9 @@
                 <input asp-for="Review" class="form-control" />
                 <span asp-validation-for="Review" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NumberOfGuests" class="control-label"></label>
-                <input asp-for="NumberOfGuests" class="form-control" />
-                <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PurchseDate" class="control-label"></label>
-                <input asp-for="PurchseDate" class="form-control" />
-                <span asp-validation-for="PurchseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ApartmentID" class="control-label"></label>
-                <select asp-for="ApartmentID" class ="form-control" asp-items="ViewBag.ApartmentID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="GuestID" class="control-label"></label>
-                <select asp-for="GuestID" class ="form-control" asp-items="ViewBag.GuestID"></select>
-            </div>
+            <input type="hidden" asp-for="PurchseDate" value="@DateTime.Now" class="form-control" />
+            <input type="hidden" asp-for="ApartmentID" value="@apID" class="form-control" />
+            <input type="hidden" asp-for="GuestID" value="@userID" class="form-control" />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

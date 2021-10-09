@@ -1,5 +1,6 @@
 ﻿using GroundBNB.Data;
 using GroundBNB.Models;
+using GroundBNB.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GroundBNB.Controllers
@@ -20,13 +22,18 @@ namespace GroundBNB.Controllers
     {
         private readonly SiteContext _context;
 
-        public HomeController(SiteContext context)
+        private readonly ISiteViewsService _siteviews;
+
+        public HomeController(SiteContext context, ISiteViewsService siteViews)
         {
             _context = context;
+            _siteviews = siteViews;
         }
+
 
         public IActionResult Index()
         {
+            this._siteviews.Increment();
             return View();
         }
 
@@ -59,16 +66,19 @@ namespace GroundBNB.Controllers
             if(user!=null && password==user.Password)
             {
                 //claim = properties for user
+                //var identity = new ClaimsIdentity();
                 var claims = new List<Claim>();
-                claims.Add(new Claim("username", username));
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, username));
                 claims.Add(new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName));
+                claims.Add(new Claim(ClaimTypes.Email, user.Email));
+                claims.Add(new Claim("ID", user.ID.ToString()));
+
                 if (user.IsAdmin)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "Admin"));
                 }
-                var clainsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var claimsPrincipal = new ClaimsPrincipal(clainsIdentity);
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await HttpContext.SignInAsync(claimsPrincipal);
                 return Redirect("/");
             }

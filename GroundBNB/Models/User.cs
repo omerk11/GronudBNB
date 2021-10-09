@@ -24,13 +24,11 @@ namespace GroundBNB.Models
         [Required(ErrorMessage = "Email address required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "The password is required")]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Password required")]
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
         public ICollection<Apartment> Apartments { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
-        
-
-
     }
 }
