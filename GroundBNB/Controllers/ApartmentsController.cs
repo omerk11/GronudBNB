@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GroundBNB.Data;
 using GroundBNB.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GroundBNB.Controllers
 {
@@ -22,7 +23,12 @@ namespace GroundBNB.Controllers
         // GET: Apartments
         public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity)
         {
-            var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap;
+            var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap; ;
+            if (myAps)
+            {
+                var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+                apartments = from ap in apartments where ap.ApartmentOwnerID.ToString() == userID.Value select ap;
+            }
 
             //Calculate rating for each apartment
             Dictionary<int, float> rating = new Dictionary<int, float>();
@@ -226,5 +232,18 @@ namespace GroundBNB.Controllers
         {
             return _context.Apartments.Any(e => e.ID == id);
         }
+
+        [Authorize]
+        public async Task<IActionResult> MyApartment()
+        {
+            var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+            var apartments = from ap in _context.Apartments.Include(a => a.Reservations) where ap.ApartmentOwnerID.ToString() == userID.Value select ap;
+
+
+            //Calculate rating for each apartment
+            return View(await apartments.AsNoTracking().ToListAsync());
+        }
     }
 }
+
+
