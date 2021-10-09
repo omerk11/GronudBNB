@@ -112,24 +112,13 @@ namespace GroundBNB.Controllers
                     apartments = apartments.OrderByDescending(ap => ap.AvgRating);
                     break;
             }
-            if (startDate >= endDate)
+            if (startDate >= endDate || (startDate == null && endDate != null) || (startDate != null && endDate == null))
             {
                 TempData["Error"] = "Error. Dates are incorrect";
-                //return View(await apartments.AsNoTracking().ToListAsync());
+                
             }
             return View(await apartments.AsNoTracking().ToListAsync());
         }
-        //private bool isApartmentAvailable(Apartment ap, DateTime? startDate, DateTime? endDate)
-        //{
-        //    foreach(Reservation res in ap.Reservations)
-        //    {
-        //        if(startDate < res.EndDate && res.StartDate < endDate)
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-        //}
 
         // GET: Apartments/Details/5
         public async Task<IActionResult> Details(int? id)

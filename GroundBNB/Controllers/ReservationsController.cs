@@ -63,10 +63,19 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Reservations/Create
-        public IActionResult Create()
+        public IActionResult Create(DateTime? startDate, DateTime? endDate, int apID)
         {
             ViewData["ApartmentID"] = new SelectList(_context.Apartments, "ID", "City");
             ViewData["GuestID"] = new SelectList(_context.Users, "ID", "Email");
+            if (startDate != null)
+            {
+                ViewData["StartDateFilter"] = startDate.Value.ToString("yyyy-MM-dd");
+            }
+            if (endDate != null)
+            {
+                ViewData["EndDateFilter"] = endDate.Value.ToString("yyyy-MM-dd");
+            }
+            ViewData["ApartmentID"] = apID;
             return View();
         }
 

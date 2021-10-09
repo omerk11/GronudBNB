@@ -7,7 +7,7 @@
     var startDate = ViewData["StartDateFilter"] as string;
     var endDate = ViewData["EndDateFilter"] as string;
 }
-}
+
 
 <h1>Find Your Dream Vacation Apartment!</h1>
 
@@ -107,13 +107,13 @@
                     }
                 </td>
                 <td>
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity.IsAuthenticated && startDate != null && endDate != null)
                     {
-                        <a asp-action="AddRes" asp-route-id="@item.ID">Add Reservation</a>
+                        <a asp-controller="Reservations" asp-action="Create" asp-route-startDate="@startDate"  asp-route-endDate="@endDate" asp-route-apID="@item.ID" >Add Reservation</a>
                     }
                     else
                     {
-                        <p>Log In To Reserve</p>
+                        <p>No Action Available</p>
                     }
 
                 </td>
