@@ -193,8 +193,17 @@ namespace GroundBNB.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> MyReservation()
+        {
+            var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+            var reservations = from res in _context.Reservations where res.GuestID.ToString() == userID.Value select res;
 
-        private bool ReservationExists(int id)
+
+            //Calculate rating for each apartment
+            return View(await reservations.AsNoTracking().ToListAsync());
+        }
+
+            private bool ReservationExists(int id)
         {
             return _context.Reservations.Any(e => e.ID == id);
         }
