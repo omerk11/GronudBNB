@@ -60,7 +60,111 @@ namespace GroundBNB.Controllers
 
             return View();
         }
+        public static bool isPasswordSecured(String password)
+        {
+            //Password should not contain any space.
+            // Password should contain at least one digit(0 - 9).
+            //Password length should be between 8 to 15 characters.
+            //Password should contain at least one lowercase letter(a-z).
+            //Password should contain at least one uppercase letter(A-Z).
+            //Password should contain at least one special character( @, #, %, &, !, $, etc….).
+            // for checking if password length
+            // is between 8 and 15
+            if (!((password.Length >= 6) && (password.Length <= 15)))
+            {
+                return false;
+            }
 
+            //check space
+            if (password.Contains(" "))
+            {
+                return false;
+            }
+            if (true)
+            {
+                int count = 0;
+
+                // check digits from 0 to 9
+                for (int i = 0; i <= 9; i++)
+                {
+
+                    // to convert int to string
+                    String str1 = i.ToString();
+
+                    if (password.Contains(str1))
+                    {
+                        count = 1;
+                    }
+                }
+                if (count == 0)
+                {
+                    return false;
+                }
+            }
+
+            // special characters
+            if (!(password.Contains("@") || password.Contains("#")
+                || password.Contains("!") || password.Contains("~")
+                || password.Contains("$") || password.Contains("%")
+                || password.Contains("^") || password.Contains("&")
+                || password.Contains("*") || password.Contains("(")
+                || password.Contains(")") || password.Contains("-")
+                || password.Contains("+") || password.Contains("/")
+                || password.Contains(":") || password.Contains(".")
+                || password.Contains(", ") || password.Contains("<")
+                || password.Contains(">") || password.Contains("?")
+                || password.Contains("|")))
+            {
+                return false;
+            }
+
+            if (true)
+            {
+                int count = 0;
+
+                // checking capital letters
+                for (int i = 65; i <= 90; i++)
+                {
+
+                    // type casting
+                    char c = (char)i;
+
+                    String str1 = c.ToString();
+                    if (password.Contains(str1))
+                    {
+                        count = 1;
+                    }
+                }
+                if (count == 0)
+                {
+                    return false;
+                }
+            }
+
+            if (true)
+            {
+                int count = 0;
+
+                // checking small letters
+                for (int i = 90; i <= 122; i++)
+                {
+
+                    // type casting
+                    char c = (char)i;
+                    String str1 = c.ToString();
+
+                    if (password.Contains(str1))
+                    {
+                        count = 1;
+                    }
+                }
+                if (count == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         // POST: Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -71,7 +175,8 @@ namespace GroundBNB.Controllers
             user.IsAdmin = false;
             //check if user exists
             string error = "";
-            foreach(User u in _context.Users)
+            bool secured = false;
+            foreach (User u in _context.Users)
             {
                 if (u.ID == user.ID)
                 {
@@ -85,6 +190,14 @@ namespace GroundBNB.Controllers
                 {
                     error += "User Phone Number Already Exists. ";
                 }
+
+            }
+
+            //check if password is secures
+            secured = isPasswordSecured(user.Password);
+            if (secured == false)
+            {
+                error += "Password is not secured. ";
             }
             if (!String.IsNullOrEmpty(error))
             {
