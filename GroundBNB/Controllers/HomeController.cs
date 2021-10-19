@@ -37,6 +37,7 @@ namespace GroundBNB.Controllers
             return View();
         }
 
+
         [HttpGet("denied")]
         public IActionResult Denied()
         {
@@ -103,5 +104,11 @@ namespace GroundBNB.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [Route("/NotFound")]
+        public IActionResult PageNotFound()
+        {
+            return View();
+        }
     }
 }
+
