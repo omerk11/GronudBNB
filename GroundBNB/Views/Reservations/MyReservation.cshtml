@@ -6,6 +6,17 @@
 
 <h1>My Reservations!!!</h1>
 
+<form asp-action="MyReservation" method="get">
+    <div class="form-actions no-color">
+
+        <h5>Find Reservation By Apartment:</h5> <input type="text" name="searchAp" value="@ViewData["ApFilter"]" />
+        
+        <input type="submit" value="Search" class="btn btn-primary" />
+
+    </div>
+    <a class="btn-sm btn-danger" asp-action="MyReservation">Clear Search</a>
+</form>
+
 <table class="table">
     <thead>
         <tr>
