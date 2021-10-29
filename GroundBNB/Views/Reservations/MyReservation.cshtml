@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    var date = ViewData["DateFilter"] as string;
 }
 
 <h1>My Reservations!!!</h1>
@@ -11,6 +12,7 @@
 
         <h5>Find Reservation By Apartment:</h5> <input type="text" name="searchAp" value="@ViewData["ApFilter"]" />
         <h5>Find Reservation By City:</h5> <input type="text" name="searchCity" value="@ViewData["CityFilter"]" />
+        <h5>Date:</h5><input type="date" name="date" value="@date" />
         <input type="submit" value="Search" class="btn btn-primary" />
 
     </div>
@@ -21,10 +23,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Review)
+                @Html.DisplayNameFor(model => model.Apartment)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NumberOfGuests)
@@ -39,50 +38,49 @@
                 @Html.DisplayNameFor(model => model.PurchseDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Apartment)
+                My Review
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Guest)
+                Actions
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Review)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumberOfGuests)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PurchseDate)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-controller="Apartments" asp-route-id="@item.Apartment.ID" style="">
-                        @Html.DisplayFor(modelItem => item.Apartment.Title)
-                        </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Guest.Email)
-                </td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete |</a>
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>
-
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <a asp-action="Details" asp-controller="Apartments" asp-route-id="@item.Apartment.ID" style="">
+                    @Html.DisplayFor(modelItem => item.Apartment.Title)
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfGuests)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchseDate)
+            </td>
+            <td>
+                @if (item.Review != null)
+                {
+                    Html.DisplayFor(modelItem => item.Review);
+                }
+                else
+                {
+                    <p>No Review Submited</p>
+                }
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete |</a>
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

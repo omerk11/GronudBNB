@@ -193,13 +193,17 @@ namespace GroundBNB.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        public async Task<IActionResult> MyReservation(string searchAp, string searchCity)
+        public async Task<IActionResult> MyReservation(string searchAp, string searchCity, DateTime? date)
         {
             var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
             var reservations = from res in _context.Reservations.Include(a => a.Apartment) where res.GuestID.ToString() == userID.Value select res;
 
             ViewData["ApFilter"] = searchAp;
             ViewData["CityFilter"] = searchCity;
+            if (date != null)
+            {
+                ViewData["DateFilter"] = date.Value.ToString("yyyy-MM-dd");
+            }
 
             if (!String.IsNullOrEmpty(searchAp))
             {
@@ -209,7 +213,11 @@ namespace GroundBNB.Controllers
             {
                 reservations = reservations.Where(res => res.Apartment.City.Contains(searchCity));
             }
-
+            if(date != null)
+            {
+                reservations = reservations.Where(res => (res.StartDate <= date) && (res.EndDate >= date));
+            }
+            reservations = reservations.OrderBy(res => res.StartDate);
             return View(await reservations.AsNoTracking().ToListAsync());
         }
 
