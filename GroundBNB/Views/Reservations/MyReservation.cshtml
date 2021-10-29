@@ -10,7 +10,7 @@
     <div class="form-actions no-color">
 
         <h5>Find Reservation By Apartment:</h5> <input type="text" name="searchAp" value="@ViewData["ApFilter"]" />
-        
+        <h5>Find Reservation By City:</h5> <input type="text" name="searchCity" value="@ViewData["CityFilter"]" />
         <input type="submit" value="Search" class="btn btn-primary" />
 
     </div>
@@ -70,7 +70,9 @@
                     @Html.DisplayFor(modelItem => item.PurchseDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Apartment.Title)
+                    <a asp-action="Details" asp-controller="Apartments" asp-route-id="@item.Apartment.ID" style="">
+                        @Html.DisplayFor(modelItem => item.Apartment.Title)
+                        </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Guest.Email)

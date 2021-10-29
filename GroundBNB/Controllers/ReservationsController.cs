@@ -193,15 +193,21 @@ namespace GroundBNB.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        public async Task<IActionResult> MyReservation(string searchAp)
+        public async Task<IActionResult> MyReservation(string searchAp, string searchCity)
         {
             var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
             var reservations = from res in _context.Reservations.Include(a => a.Apartment) where res.GuestID.ToString() == userID.Value select res;
 
             ViewData["ApFilter"] = searchAp;
+            ViewData["CityFilter"] = searchCity;
+
             if (!String.IsNullOrEmpty(searchAp))
             {
                 reservations = reservations.Where(res => res.Apartment.Title.Contains(searchAp) || res.Apartment.Description.Contains(searchAp));
+            }
+            if (!String.IsNullOrEmpty(searchCity))
+            {
+                reservations = reservations.Where(res => res.Apartment.City.Contains(searchCity));
             }
 
             return View(await reservations.AsNoTracking().ToListAsync());
