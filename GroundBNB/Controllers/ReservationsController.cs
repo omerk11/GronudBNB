@@ -160,9 +160,55 @@ namespace GroundBNB.Controllers
             ViewData["GuestID"] = new SelectList(_context.Users, "ID", "Email", reservation.GuestID);
             return View(reservation);
         }
+        public async Task<IActionResult> RateReservation(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+            ViewData["ApartmentID"] = new SelectList(_context.Apartments, "ID", "City", reservation.ApartmentID);
+            ViewData["GuestID"] = new SelectList(_context.Users, "ID", "Email", reservation.GuestID);
+            return View(reservation);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RateReservation(int id, Reservation reservation)
+        {
+            var originalRes = await _context.Reservations.FindAsync(id);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    originalRes.Rating = reservation.Rating;
+                    originalRes.Review = reservation.Review;
+                    _context.Update(originalRes);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ReservationExists(reservation.ID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(MyReservation));
+            }
+            ViewData["ApartmentID"] = new SelectList(_context.Apartments, "ID", "City", reservation.ApartmentID);
+            ViewData["GuestID"] = new SelectList(_context.Users, "ID", "Email", reservation.GuestID);
+            return View(reservation);
+        }
         // GET: Reservations/Delete/5
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -227,6 +273,7 @@ namespace GroundBNB.Controllers
             return View(await reservations.AsNoTracking().ToListAsync());
         }
 
+        
             private bool ReservationExists(int id)
         {
             return _context.Reservations.Any(e => e.ID == id);

@@ -44,6 +44,9 @@
                 @Html.DisplayNameFor(model => model.PurchseDate)
             </th>
             <th>
+                My Rating
+            </th>
+            <th>
                 My Review
             </th>
             <th>
@@ -73,9 +76,13 @@
                 @Html.DisplayFor(modelItem => item.PurchseDate)
             </td>
             <td>
-                @if (item.Review != null)
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @if (!String.IsNullOrEmpty(item.Review))
                 {
-                    Html.DisplayFor(modelItem => item.Review);
+                    <p>@item.Review</p>
+                    //Html.DisplayFor(modelItem => item.Review);
                 }
                 else
                 {
@@ -83,8 +90,8 @@
                 }
             </td>
             <td>
-                <a asp-action="Delete" asp-route-id="@item.ID">Cancel |</a>
-                <a asp-action="Details" asp-route-id="@item.ID">Rate Your Stay</a>
+                <a asp-action="Delete" asp-route-id="@item.ID">Cancel Reservation |</a>
+                <a asp-action="RateReservation" asp-route-id="@item.ID">Rate Your Stay</a>
             </td>
         </tr>
         }
