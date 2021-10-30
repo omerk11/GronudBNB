@@ -171,6 +171,7 @@ namespace GroundBNB.Controllers
             var apartment = await _context.Apartments
                 .Include(a => a.ApartmentOwner)
                 .Include(a=> a.ApartmentsViews)
+                .Include(a => a.Reservations)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (apartment == null)
             {
