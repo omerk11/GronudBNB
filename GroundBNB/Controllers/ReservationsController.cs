@@ -30,7 +30,7 @@ namespace GroundBNB.Controllers
             this._siteviews.Increment();
 
             if (User.IsInRole("Admin"))
-            { 
+            {
                 var siteContext = _context.Reservations.Include(r => r.Apartment).Include(r => r.Guest);
                 return View(await siteContext.ToListAsync());
             }
@@ -43,7 +43,7 @@ namespace GroundBNB.Controllers
             }
             else
             {
-               return Redirect("/login");
+                return Redirect("/login");
             }
         }
 
@@ -207,6 +207,17 @@ namespace GroundBNB.Controllers
             ViewData["GuestID"] = new SelectList(_context.Users, "ID", "Email", reservation.GuestID);
             return View(reservation);
         }
+
+        public async Task<IActionResult> ReservationsForMyApartments()
+        {
+            //this._siteviews.Increment(); is this needed?
+
+            var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+            //.ThenInclude(ap => ap.ApartmentOwner)
+            var reservations = from res in _context.Reservations.Include(res => res.Guest).Include(res => res.Apartment) where res.Apartment.ApartmentOwnerID.ToString() == userID.Value select res;
+            return View(await reservations.ToListAsync());
+
+        }
         // GET: Reservations/Delete/5
         //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
@@ -227,6 +238,7 @@ namespace GroundBNB.Controllers
 
             return View(reservation);
         }
+
 
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -260,21 +272,21 @@ namespace GroundBNB.Controllers
             {
                 reservations = reservations.Where(res => res.Apartment.City.Contains(searchCity));
             }
-            if(date != null)
+            if (date != null)
             {
                 reservations = reservations.Where(res => (res.StartDate <= date) && (res.EndDate >= date));
             }
             reservations = reservations.OrderBy(res => res.StartDate);
 
-            if(!showPastRes)
+            if (!showPastRes)
             {
                 reservations = reservations.Where(res => res.EndDate > DateTime.Now);
             }
             return View(await reservations.AsNoTracking().ToListAsync());
         }
 
-        
-            private bool ReservationExists(int id)
+
+        private bool ReservationExists(int id)
         {
             return _context.Reservations.Any(e => e.ID == id);
         }

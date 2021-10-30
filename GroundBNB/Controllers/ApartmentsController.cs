@@ -27,14 +27,9 @@ namespace GroundBNB.Controllers
         }
 
         // GET: Apartments
-        public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity, DateTime? startDate, DateTime? endDate, bool myAps = false)
+        public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity, DateTime? startDate, DateTime? endDate)
         {
             var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap;
-            if(myAps)
-            {
-                var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
-                apartments = from ap in apartments where ap.ApartmentOwnerID.ToString() == userID.Value select ap;
-            }
 
             //Calculate rating for each apartment
             Dictionary<int, float> rating = new Dictionary<int, float>();

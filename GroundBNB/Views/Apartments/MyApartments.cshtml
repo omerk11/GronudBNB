@@ -9,6 +9,7 @@
 
 <p>
     <a asp-action="Create">Create New Apartment</a>
+    <a class="btn-sm btn-info" asp-controller="Reservations" asp-action="ReservationsForMyApartments" >View Reservations For My Apartments</a>
 </p>
 
 
@@ -23,16 +24,16 @@
                 Address
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
+                @Html.DisplayNameFor(model => model.NumOfRooms)
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
+                @Html.DisplayNameFor(model => model.MaxNumOfGuests)
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
+                @Html.DisplayNameFor(model => model.PricePerDay)
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
+                Rating
             </th>
         </tr>
     </thead>
