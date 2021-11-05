@@ -24,12 +24,21 @@ namespace GroundBNB.Api_Controllers
             _apartmentviews = apartmentViews;
         }
 
-        public async Task<bool> Delete(int id)
+        [Route("Delete")]
+        [HttpPost]
+
+        public async Task<bool> Delete([FromForm] int id)
         {
+            // TODO: Make sure only speciic roles can delete apartments
             var apartment = await _context.Apartments.FindAsync(id);
-            _context.Apartments.Remove(apartment);
-            await _context.SaveChangesAsync();
-            return true;
+            if (apartment != null)
+            {
+                _context.Apartments.Remove(apartment);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
         }
     }
 }
