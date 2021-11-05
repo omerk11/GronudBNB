@@ -5,90 +5,47 @@
     Dictionary<int, int> reviewCount = (Dictionary<int, int>)ViewData["ApartmentReviewCounter"];
 }
 
-<h1>My Apartments!</h1>
+<main class="main-list">
+        <h1>
+            My Apartments
+        </h1>
+        <p>
+            <a class="btn btn-info" asp-action="Create">Add New Apartment</a>
+            <a class="btn btn-info" asp-controller="Reservations" asp-action="ReservationsForMyApartments" >View Reservations For My Apartments</a>
+        </p>
 
-<p>
-    <a class="btn-sm btn-info" asp-action="Create">Add New Apartment</a>
-    <a class="btn-sm btn-info" asp-controller="Reservations" asp-action="ReservationsForMyApartments" >View Reservations For My Apartments</a>
-</p>
-
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                Address
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumOfRooms)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaxNumOfGuests)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PricePerDay)
-            </th>
-            <th>
-                Rating
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <h5>
-                        <a asp-action="Details" asp-route-id="@item.ID" style="">
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </a>
-                    </h5><br />
-
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-
-                    <h6>City: </h6>@Html.DisplayFor(modelItem => item.City)<br />
-                    <h6>St: </h6> @Html.DisplayFor(modelItem => item.Street)<br />
-                    <h6>Floor: </h6> @Html.DisplayFor(modelItem => item.Floor)<br />
-                    <h6>Apartment Number: </h6> @Html.DisplayFor(modelItem => item.ApartmentNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumOfRooms)
-                </td>
-                <td>
-                    Fit For @Html.DisplayFor(modelItem => item.MaxNumOfGuests) Guests
-                </td>
-                <td>
-                    <h6>$@Html.DisplayFor(modelItem => item.PricePerDay)</h6>/Day
-                </td>
-                <td>
-                    @{
-                        if (reviewCount[item.ID] > 0)
-                        {//add a link to all reviews
-                            <a><h6>@item.AvgRating Stars!</h6>(@reviewCount[item.ID] Reviews)</a>
-                        }
-                        else
-                        {
-                            <a>UnRated</a>
-                        }
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit |</a>
-                    <a href="javascript: void(0);" name="remove_ap" data-id="@item.ID">Remove</a>
-                </td>
-            </tr>
+            <section>
+                <a asp-action="Details" asp-route-id="@item.ID" class="container-a">
+                <div class="data">
+                    <div class="desc">
+                        <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
+                        <p>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </p>
+                        <p>
+                            <strong>St: </strong> @Html.DisplayFor(modelItem => item.Street)<br />
+                            <strong>Floor: </strong> @Html.DisplayFor(modelItem => item.Floor)<br />
+                            <strong>Apartment Number: </strong> @Html.DisplayFor(modelItem => item.ApartmentNumber) <br/>
+                            <strong>Fit For @Html.DisplayFor(modelItem => item.MaxNumOfGuests) Guests</strong>
+                        </p>
+                    </div>
+                    <div class="tools">
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit |</a>
+                        <a href="javascript: void(0);" name="remove_ap" data-id="@item.ID">Remove</a>
+                    </div>
+                </div>
+                <div class="footerdata">
+                    @Html.DisplayFor(modelItem => item.City) <span>|</span> $@Html.DisplayFor(modelItem => item.PricePerDay)/day <span>|</span> @Html.DisplayFor(modelItem => item.NumOfRooms) Rooms 
+                    
+                    <span>|</span> @Html.Raw(reviewCount[item.ID] > 0 ? string.Format("{0} Stars! ({1} Reviews)", item.AvgRating, reviewCount[item.ID]) : "UnRated")
+                </div>
+                </a>
+            </section>
         }
-    </tbody>
-</table>
+</main>
+
 @section Scripts
 {
     <script>
@@ -99,7 +56,7 @@
                     $that = $(this);
                     $.post('/api/ApartmentsApi/Delete', { id: id }, function (data, status) {
                         if(data === true) {
-                            $that.parent().parent().remove();
+                            $that.parent().parent().parent().remove();
                         }
                     });
                 })
