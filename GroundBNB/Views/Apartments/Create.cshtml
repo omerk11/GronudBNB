@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Create";
     var userID = User.Claims.FirstOrDefault(c => c.Type == "ID").Value;
-
 }
 
 <h1>Create</h1>
@@ -62,6 +61,7 @@
             <input type="hidden" asp-for="ApartmentOwnerID" value="@userID" class="form-control" />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                
             </div>
         </form>
     </div>
@@ -74,3 +74,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
