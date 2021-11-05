@@ -196,7 +196,7 @@ namespace GroundBNB.Controllers
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
                 Twitter twitter = new Twitter();
-                await twitter.TweetText("A new apartment was added! \n" + apartment.Title + "Located in " + apartment.City + "\nBook your new reservation now!");
+                await twitter.TweetText("A new apartment was added! \n" + apartment.Title + " located in " + apartment.City + "\nBook your new reservation now!");
                 return RedirectToAction(nameof(Index));
             }
 
