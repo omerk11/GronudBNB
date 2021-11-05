@@ -517,3 +517,4 @@ FodyWeavers.xsd
 **/Migrations/**
 NadlanNearBy.Web/uploads/65ded02c-ae20-4d78-9dc7-bdf337378658.jpeg
 **/uploads/**
+.vscode
