@@ -1,26 +1,10 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Login";
     var returnUrl = ViewData["ReturnUrl"] as string;
     var error = TempData["Error"] as string;
 }
 
-<h1>Login</h1>
-@if (!string.IsNullOrEmpty(error))
-{
-    <h2 class="alert-danger" style="padding:20px;">@error</h2>
-}
-@*<form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
-    <input type="text" name="username" placeholder="Username"/>
-    <input type="password" name="password" placeholder="password" />
-    <input type="submit" value="login" />
-</form>*@
 
-
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Login</title>
     <style type="text/css">
         body {
             background-color: #f4f4f4;
@@ -113,17 +97,22 @@
         }
 
     </style>
-</head>
-<body>
+    
+@if (!string.IsNullOrEmpty(error))
+{
+    <h2 class="alert-danger" style="padding:20px;">@error</h2>
+}
     <div id="login">
         <h1><strong>Welcome.</strong> Please login.</h1>
         <form action="/login?ReturnUrl=@System.Net.WebUtility.UrlEncode(returnUrl)" method="post">
             <fieldset>
-                <p><input type="text" name="username" placeholder="Email" onBlur="if(this.value=='')this.value='Username'" onFocus="if(this.value=='Username')this.value='' "></p>
-                <p><input type="password" name="password" placeholder="Password" onBlur="if(this.value=='')this.value='Password'" onFocus="if(this.value=='Password')this.value='' "></p>
+                <p><input type="text" name="username" placeholder="Email"
+                        onBlur="if(this.value=='')this.value='Username'"
+                        onFocus="if(this.value=='Username')this.value='' "></p>
+                <p><input type="password" name="password" placeholder="Password"
+                        onBlur="if(this.value=='')this.value='Password'"
+                        onFocus="if(this.value=='Password')this.value='' "></p>
                 <p><input type="submit" value="login"></p>
             </fieldset>
         </form>
-    </div> <!-- end login -->
-</body>
-</html>
+    </div>

@@ -5,14 +5,14 @@
     var error = TempData["RegisterError"] as string;
 }
 
-<h1>Create</h1>
-
-<h4>User</h4>
+<main class="main-list">
+<h1>Sign Up</h1>
+</main>
 @if (!String.IsNullOrEmpty(error))
 {
     <h4 class="alert-danger" style="padding:20px;">@error</h4>
 }
-<hr />
+<main class="main-list">
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -58,10 +58,8 @@
         </form>
     </div>
 </div>
+</main>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
