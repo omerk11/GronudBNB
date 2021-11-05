@@ -33,7 +33,17 @@ namespace GroundBNB.Api_Controllers
             var apartment = _context.Apartments.Find(id);
             if (apartment != null)
             {
-                _context.Reservations.RemoveRange(_context.Reservations.Where(k => k.ApartmentID == apartment.ID));
+                var res = _context.Reservations.Where(k => k.ApartmentID == apartment.ID);
+                var views = _context.ApartmentViews.Where(k => k.ApartmentID == apartment.ID);
+                if (res.Count() > 0)
+                {
+                    _context.Reservations.RemoveRange(res);
+                }
+
+                if(views.Count() > 0) {
+                    _context.ApartmentViews.RemoveRange(views);
+                }
+
                 _context.Apartments.Remove(apartment);
                 _context.SaveChanges();
                 return true;
