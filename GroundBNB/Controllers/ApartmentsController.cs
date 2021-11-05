@@ -29,8 +29,7 @@ namespace GroundBNB.Controllers
         // GET: Apartments
         public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity, DateTime? startDate, DateTime? endDate)
         {
-     
-            var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap;
+            var apartments = _context.Apartments.Include(x => x.Reservations).AsEnumerable();
 
             //Calculate rating for each apartment
             Dictionary<int, float> rating = new Dictionary<int, float>();
@@ -63,7 +62,7 @@ namespace GroundBNB.Controllers
             ViewData["RatingSortParm"] = sortOrder == "rating" ? "rating_desc" : "rating";
             ViewData["NameFilter"] = searchName;
             ViewData["CityFilter"] = searchCity;
-            if(startDate!= null)
+            if (startDate != null)
             {
                 ViewData["StartDateFilter"] = startDate.Value.ToString("yyyy-MM-dd");
             }
@@ -76,18 +75,12 @@ namespace GroundBNB.Controllers
             {
                 apartments = apartments.Where(ap => ap.Title.Contains(searchName) || ap.Description.Contains(searchName));
             }
-            if (!String.IsNullOrEmpty(searchCity))
-            {
-                //var res = apartments.AsEnumerable().GroupBy(ap => ap.City == searchCity).Where(ap => ap.Key).SelectMany(ap => ap).ToList();
-                
-                apartments = apartments.GroupBy(ap => ap.City == searchCity).Where(ap => ap.Key).SelectMany(ap => ap);
-            }
             if (startDate != null && endDate != null)
             {
                 apartments = apartments.Where(ap => !(ap.Reservations.FirstOrDefault(r => startDate.Value < r.EndDate) != null
                                                 && ap.Reservations.FirstOrDefault(r => endDate.Value > r.StartDate) != null));
             }
-            
+
 
             switch (sortOrder)
             {
@@ -118,7 +111,13 @@ namespace GroundBNB.Controllers
                     break;
             }
 
-            return View(await apartments.AsNoTracking().ToListAsync());
+
+            if (!String.IsNullOrEmpty(searchCity))
+            {
+                apartments = apartments.GroupBy(ap => ap.City == searchCity).Where(ap => ap.Key).SelectMany(ap => ap);
+            }
+
+            return View(apartments);
         }
 
         public async Task<IActionResult> MyApartments(string sortOrder, string searchName, string searchCity, bool myAps = true)
@@ -169,7 +168,7 @@ namespace GroundBNB.Controllers
 
             var apartment = await _context.Apartments
                 .Include(a => a.ApartmentOwner)
-                .Include(a=> a.ApartmentsViews)
+                .Include(a => a.ApartmentsViews)
                 .Include(a => a.Reservations)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (apartment == null)
@@ -221,7 +220,7 @@ namespace GroundBNB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create_New([Bind("ID,Title,Description,NumOfRooms,PricePerDay,City,Street,Floor,ApartmentNumber,MaxNumOfGuests,ApartmentOwnerID")] Apartment apartment)
         {
-           
+
             if (ModelState.IsValid)
             {
                 _context.Add(apartment);
