@@ -77,13 +77,16 @@ namespace GroundBNB.Controllers
             }
             if (!String.IsNullOrEmpty(searchCity))
             {
-                apartments = apartments.Where(ap => ap.City.Contains(searchCity));
+                //var res = apartments.AsEnumerable().GroupBy(ap => ap.City == searchCity).Where(ap => ap.Key).SelectMany(ap => ap).ToList();
+                
+                apartments = apartments.GroupBy(ap => ap.City == searchCity).Where(ap => ap.Key).SelectMany(ap => ap);
             }
             if (startDate != null && endDate != null)
             {
                 apartments = apartments.Where(ap => !(ap.Reservations.FirstOrDefault(r => startDate.Value < r.EndDate) != null
                                                 && ap.Reservations.FirstOrDefault(r => endDate.Value > r.StartDate) != null));
             }
+            
 
             switch (sortOrder)
             {
