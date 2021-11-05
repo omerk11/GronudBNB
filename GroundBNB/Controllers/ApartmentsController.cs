@@ -29,6 +29,7 @@ namespace GroundBNB.Controllers
         // GET: Apartments
         public async Task<IActionResult> Index(string sortOrder, string searchName, string searchCity, DateTime? startDate, DateTime? endDate)
         {
+     
             var apartments = from ap in _context.Apartments.Include(a => a.Reservations) select ap;
 
             //Calculate rating for each apartment
@@ -194,8 +195,11 @@ namespace GroundBNB.Controllers
             {
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
+                Twitter twitter = new Twitter();
+                await twitter.TweetText("A new apartment was added! \n" + apartment.Title + " located in " + apartment.City + "\nBook your new reservation now!");
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ApartmentOwnerID"] = new SelectList(_context.Users, "ID", "Email", apartment.ApartmentOwnerID);
             return View(apartment);
         }
