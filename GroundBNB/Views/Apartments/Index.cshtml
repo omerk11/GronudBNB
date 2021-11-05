@@ -8,109 +8,81 @@
     var endDate = ViewData["EndDateFilter"] as string;
 }
 
+<main class="main-list">
+    <h1>Find Your Dream Vacation Apartment!</h1>
 
-<h1>Find Your Dream Vacation Apartment!</h1>
-
-@if (!string.IsNullOrEmpty(error))
-{
-    <h2 class="alert-danger" style="padding:20px;">@error</h2>
-}
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <h2 class="alert-danger" style="padding:20px;">@error</h2>
+    }
 
 
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
 
-        <h5>Find Apartment By Title:</h5> <input type="text" name="searchName" value="@ViewData["NameFilter"]" />
-        <h5>Find Apartment By City:</h5> <input type="text" name="searchCity" value="@ViewData["CityFilter"]" />
-        <h5>Start Date:</h5><input type="date" name="startDate" value="@startDate" />
-        <h5>End Date:</h5><input type="date" name="endDate" value="@endDate" />
-        <input type="submit" value="Search" class="btn btn-primary" />
+            <h5>Find Apartment By Title:</h5> <input type="text" name="searchName" value="@ViewData["NameFilter"]" />
+            <h5>Find Apartment By City:</h5> <input type="text" name="searchCity" value="@ViewData["CityFilter"]" />
+            <h5>Start Date:</h5><input type="date" name="startDate" value="@startDate" />
+            <h5>End Date:</h5><input type="date" name="endDate" value="@endDate" />
+            <input type="submit" value="Search" class="btn btn-primary" />
 
+        </div>
+        <a class="btn-sm btn-danger" asp-action="Index">Clear Search</a>
+    </form>
+</main>
+<main class="main-list">
+    <div class="sort-options">
+        <strong>Sort by: </strong>
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]"
+            asp-route-searchName="@ViewData["NameFilter"]"
+            asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
+
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]"
+            asp-route-searchName="@ViewData["NameFilter"]"
+            asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
+
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]"
+            asp-route-searchName="@ViewData["NameFilter"]"
+            asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
+
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]"
+            asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
     </div>
-    <a class="btn-sm btn-danger" asp-action="Index">Clear Search</a>
-</form>
 
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                Address
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]" asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <h5>
-                        <a asp-action="Details" asp-route-id="@item.ID" style="">
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </a>
-                    </h5><br />
-
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-
-                    <h6>City: </h6>@Html.DisplayFor(modelItem => item.City)<br />
-                    <h6>St: </h6> @Html.DisplayFor(modelItem => item.Street)<br />
-                    <h6>Floor: </h6> @Html.DisplayFor(modelItem => item.Floor)<br />
-                    <h6>Apartment Number: </h6> @Html.DisplayFor(modelItem => item.ApartmentNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumOfRooms)
-                </td>
-                <td>
-                    Fit For @Html.DisplayFor(modelItem => item.MaxNumOfGuests) Guests
-                </td>
-                <td>
-                    <h6>$@Html.DisplayFor(modelItem => item.PricePerDay)</h6>/Day
-                </td>
-                <td>
-                    @{
-                        if (reviewCount[item.ID] > 0)
-                        {//add a link to all reviews
-                            <a><h6>@item.AvgRating Stars!</h6>(@reviewCount[item.ID] Reviews)</a>
-                        }
-                        else
+    @foreach (var item in Model)
+    {
+        <section>
+            <a asp-action="Details" asp-route-id="@item.ID" class="container-a">
+                <div class="data">
+                    <div class="desc">
+                        <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
+                        <p>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </p>
+                        <p>
+                            <strong>St: </strong> @Html.DisplayFor(modelItem => item.Street)<br />
+                            <strong>Floor: </strong> @Html.DisplayFor(modelItem => item.Floor)<br />
+                            <strong>Apartment Number: </strong> @Html.DisplayFor(modelItem => item.ApartmentNumber) <br />
+                            <strong>Fit For @Html.DisplayFor(modelItem => item.MaxNumOfGuests) Guests</strong>
+                        </p>
+                    </div>
+                    <div class="tools">
+                        @if (User.Identity.IsAuthenticated && startDate != null && endDate != null)
                         {
-                            <a>UnRated</a>
+                            <a asp-controller="Reservations" asp-action="Create" asp-route-startDate="@startDate"
+                        asp-route-endDate="@endDate" asp-route-apID="@item.ID">Add Reservation</a>
                         }
-                    }
-                </td>
-                <td>
-                    @if (User.Identity.IsAuthenticated && startDate != null && endDate != null)
-                    {
-                        <a asp-controller="Reservations" asp-action="Create" asp-route-startDate="@startDate"  asp-route-endDate="@endDate" asp-route-apID="@item.ID" >Add Reservation</a>
-                    }
-                    else
-                    {
-                        <p>No Action Available</p>
-                    }
+                    </div>
+                </div>
+                <div class="footerdata">
+                    @Html.DisplayFor(modelItem => item.City) <span>|</span> $@Html.DisplayFor(modelItem =>
+                item.PricePerDay)/day <span>|</span> @Html.DisplayFor(modelItem => item.NumOfRooms) Rooms
 
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    <span>|</span> @Html.Raw(reviewCount[item.ID] > 0 ? string.Format("{0} Stars! ({1} Reviews)",
+                item.AvgRating, reviewCount[item.ID]) : "UnRated")
+
+                </div>
+            </a>
+        </section>
+    }
+</main>

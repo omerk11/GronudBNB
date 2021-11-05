@@ -1,104 +1,76 @@
 ﻿<!DOCTYPE html>
 @using System.Text.RegularExpressions
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Ground BNB</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
 </head>
+
 <body>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ground BNB</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1 col-md-9">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="Index">Apartments</a>
-                        </li>
-
-
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="MyReservation">My Reservations</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="MyApartments" asp-route-myAps="@true">My Apartments</a>
-                            </li>
-                        }
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Statistics" asp-action="Index">Site Statistics</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">Reservations</a>
-                            </li>
-                        }
-                    </ul>
-                    <ul class="navbar-nav flex-grow-1 col-md-3">
-                        @if (!User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item" style="padding-right: 10px;">
-                                <button type="button" class="btn-info btn">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                                </button>
-                            </li>
-                            <li class="nav-item">
-
-                                <button type="button" class="btn-info btn">
-                                    <a type="button" class="nav-link text-dark btn-info btn-xs" asp-area="" asp-controller="Users" asp-action="Create">SignIn</a>
-                                </button>
-                            </li>
-                        }
-                        else
-                        {
-                            var userID = @User.Claims.FirstOrDefault(c => c.Type == "ID").ToString().Replace("ID: ", "");
-
-                            <li class="nav-item">
-                                <button type="button" class="btn-info btn">
-
-                                    <a type="button" class="nav-link text-dark btn-info btn-xs" asp-area="" asp-controller="Users" asp-action="Edit_user" asp-route-id="@userID">Edit</a>
-                                </button>
-                            </li>
-                            <li class="nav-item">
-                                <button type="button" class="btn-danger btn">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
-                                </button>
-                            </li>
-                        }
-                    </ul>
+        <div class="navigation">
+            <div class="left-nav">
+                <div class="logo"></div>
+                <div class="titlelogo">
+                    Ground BNB
                 </div>
             </div>
-        </nav>
+            <div class="right-nav">
+                <a class="btn btn-light" asp-area="" asp-controller="Apartments" asp-action="Index">Apartments</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-light" asp-area="" asp-controller="Reservations" asp-action="MyReservation">My
+                        Reservations</a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Apartments" asp-action="MyApartments"
+                    asp-route-myAps="@true">My Apartments</a>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-light" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Statistics" asp-action="Index">Site Statistics</a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Reservations" asp-action="Index">Reservations</a>
+                }
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-light" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Users" asp-action="Create">Sign Up</a>
+                }
+                else
+                {
+                    var userID = @User.Claims.FirstOrDefault(c => c.Type == "ID").ToString().Replace("ID: ", "");
+
+                    <a class="btn btn-light" asp-area="" asp-controller="Users" asp-action="Edit_user"
+                    asp-route-id="@userID">Settings</a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                }
+            </div>
+        </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - GroundBNB - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+
+    <footer>
+        &copy; 2021 All rights reserved to GroundBNB
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
