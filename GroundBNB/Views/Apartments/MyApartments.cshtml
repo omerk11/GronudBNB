@@ -97,6 +97,9 @@
                 $(this).click(function () {
                     var id = $(this).data("id");
                     $.post('/api/ApartmentsApi/Delete', { id: id }, function (data, status) {
+                        if(data === true) {
+                            $(this).parent().parent().remove();
+                        }
                     });
                 })
             })

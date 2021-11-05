@@ -27,14 +27,15 @@ namespace GroundBNB.Api_Controllers
         [Route("Delete")]
         [HttpPost]
 
-        public async Task<bool> Delete([FromForm] int id)
+        public bool Delete([FromForm] int id)
         {
             // TODO: Make sure only speciic roles can delete apartments
-            var apartment = await _context.Apartments.FindAsync(id);
+            var apartment = _context.Apartments.Find(id);
             if (apartment != null)
             {
+                _context.Reservations.RemoveRange(_context.Reservations.Where(k => k.ApartmentID == apartment.ID));
                 _context.Apartments.Remove(apartment);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return true;
             }
 
