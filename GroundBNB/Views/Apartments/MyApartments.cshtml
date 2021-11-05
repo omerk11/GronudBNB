@@ -96,9 +96,10 @@
             $.each($("a[name='remove_ap']"), function (index, e) {
                 $(this).click(function () {
                     var id = $(this).data("id");
+                    $that = $(this);
                     $.post('/api/ApartmentsApi/Delete', { id: id }, function (data, status) {
                         if(data === true) {
-                            $(this).parent().parent().remove();
+                            $that.parent().parent().remove();
                         }
                     });
                 })
