@@ -200,31 +200,6 @@ namespace GroundBNB.Controllers
             return View(apartment);
         }
 
-        // GET: Apartments/Create_New
-        public IActionResult Create_New()
-        {
-            ViewData["ApartmentOwnerID"] = new SelectList(_context.Users, "ID", "Email");
-            return View();
-        }
-
-        // POST: Apartments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create_New([Bind("ID,Title,Description,NumOfRooms,PricePerDay,City,Street,Floor,ApartmentNumber,MaxNumOfGuests,ApartmentOwnerID")] Apartment apartment)
-        {
-           
-            if (ModelState.IsValid)
-            {
-                _context.Add(apartment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ApartmentOwnerID"] = new SelectList(_context.Users, "ID", "Email", apartment.ApartmentOwnerID);
-            return View(apartment);
-        }
-
         // GET: Apartments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

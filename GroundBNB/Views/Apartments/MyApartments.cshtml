@@ -35,6 +35,9 @@
             <th>
                 Rating
             </th>
+            <th>
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -77,6 +80,10 @@
                             <a>UnRated</a>
                         }
                     }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit |</a>
+                    <a>Remove</a>
                 </td>
             </tr>
         }
