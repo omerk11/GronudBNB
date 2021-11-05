@@ -36,9 +36,6 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Apartments" asp-action="MyApartments" asp-route-myAps="@true">My Apartments</a>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
