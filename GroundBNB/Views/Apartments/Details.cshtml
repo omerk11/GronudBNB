@@ -188,17 +188,19 @@
         }
     </script>
 </div>
-<section class="metadata">
-    <div class="title">
-        <h2>
-            Apartments Views
-        </h2>
-    </div>
-    <div class="bar-stats">
-        <canvas id="myChart" width="640" height="150">
-        </canvas>
+@if (User.Claims.FirstOrDefault(c => c.Type == "ID").Value == Model.ApartmentOwnerID.ToString())
+{
+    <section class="metadata">
+        <div class="title">
+            <h2>
+                Apartments Views
+            </h2>
+        </div>
+        <div class="bar-stats">
+            <canvas id="myChart" width="640" height="150">
+            </canvas>
 
-        <script>
+            <script>
 var ctx = document.getElementById('myChart').getContext('2d');
 
         var mainData = @Html.Raw(JsonSerializer.Serialize(Model.ApartmentsViews));
@@ -243,11 +245,11 @@ beginAtZero: true
 }
 }
 });
-        </script>
+            </script>
 
-    </div>
-</section>
-
+        </div>
+    </section>
+}
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
     <a asp-action="Index">Back to List</a>
