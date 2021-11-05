@@ -9,7 +9,7 @@
 
 <p>
     <a asp-action="Create">Create New Apartment</a>
-    <a class="btn-sm btn-info" asp-controller="Reservations" asp-action="ReservationsForMyApartments" >View Reservations For My Apartments</a>
+    <a class="btn-sm btn-info" asp-controller="Reservations" asp-action="ReservationsForMyApartments">View Reservations For My Apartments</a>
 </p>
 
 
@@ -34,6 +34,9 @@
             </th>
             <th>
                 Rating
+            </th>
+            <th>
+                Actions
             </th>
         </tr>
     </thead>
@@ -78,7 +81,29 @@
                         }
                     }
                 </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit |</a>
+                    <a href="javascript: void(0);" name="remove_ap" data-id="@item.ID">Remove</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $.each($("a[name='remove_ap']"), function (index, e) {
+                $(this).click(function () {
+                    var id = $(this).data("id");
+                    $that = $(this);
+                    $.post('/api/ApartmentsApi/Delete', { id: id }, function (data, status) {
+                        if(data === true) {
+                            $that.parent().parent().remove();
+                        }
+                    });
+                })
+            })
+        })
+    </script>
+}
