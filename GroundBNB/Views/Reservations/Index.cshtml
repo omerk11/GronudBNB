@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<main class="main-list">
 
 <table class="table">
     <thead>
@@ -70,8 +70,9 @@
                 }
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a>
 
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>
