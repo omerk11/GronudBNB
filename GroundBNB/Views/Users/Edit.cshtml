@@ -2,12 +2,17 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var error = TempData["RegisterError"] as string;
 }
 
 <h1>Edit</h1>
 
 <h4>User</h4>
 <hr />
+@if (!String.IsNullOrEmpty(error))
+{
+    <h4 class="alert-danger" style="padding:20px;">@error</h4>
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
