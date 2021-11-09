@@ -1,17 +1,17 @@
 ﻿@model GroundBNB.Models.User
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit_user";
 }
 
 <main class="main-list">
-<h1>Edit</h1>
+<h1>User Settings</h1>
 </main>
 
 <main class="main-list">
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit_user">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
