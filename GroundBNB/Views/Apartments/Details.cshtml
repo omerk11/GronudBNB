@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = "Details";
     int count = 1;
+    string userID = "";
+    if(User.Identity.IsAuthenticated)
+    {
+        userID = User.Claims.FirstOrDefault(c => c.Type == "ID").Value;
+    }
 }
 
 <h1>Details</h1>
@@ -188,7 +193,7 @@
         }
     </script>
 </div>
-@if (User.Claims.FirstOrDefault(c => c.Type == "ID").Value == Model.ApartmentOwnerID.ToString())
+@if (userID == Model.ApartmentOwnerID.ToString())
 {
     <section class="metadata">
         <div class="title">
