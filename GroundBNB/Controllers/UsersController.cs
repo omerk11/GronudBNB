@@ -174,8 +174,8 @@ namespace GroundBNB.Controllers
         {
             user.IsAdmin = false;
             //check if user exists
-            string error = "";
             bool secured = false;
+            string error = "";
             foreach (User u in _context.Users)
             {
                 if (u.ID == user.ID)
@@ -190,7 +190,6 @@ namespace GroundBNB.Controllers
                 {
                     error += "User Phone Number Already Exists. ";
                 }
-
             }
 
             //check if password is secures
@@ -209,7 +208,7 @@ namespace GroundBNB.Controllers
             {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit_user));
             }
             return View(user);
         }
@@ -243,11 +242,36 @@ namespace GroundBNB.Controllers
             {
                 return NotFound();
             }
-
+            string error = "";
+            foreach (User u in _context.Users)
+            {
+                if (u.Email == user.Email && u.ID != user.ID)
+                {
+                    error += "User Email Already Exists. ";
+                }
+                if (u.PhoneNumber == user.PhoneNumber && u.ID != user.ID)
+                {
+                    error += "User Phone Number Already Exists. ";
+                }
+            }
+            if (!String.IsNullOrEmpty(error))
+            {
+                TempData["RegisterError"] = error;
+                return View("Edit");
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var me = await _context.Users.FindAsync(id);
+                    me.FirstName = user.FirstName;
+                    me.LastName = user.LastName;
+                    me.Age = user.Age;
+                    me.Email = user.Email;
+                    me.Password = user.Password;
+                    me.PhoneNumber = user.PhoneNumber;
+                    _context.Update(me);
+                    await _context.SaveChangesAsync();
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
@@ -262,7 +286,7 @@ namespace GroundBNB.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
             return View(user);
         }
@@ -298,12 +322,35 @@ namespace GroundBNB.Controllers
             {
                 return NotFound();
             }
-
+            string error = "";
+            foreach (User u in _context.Users)
+            {
+                if (u.Email == user.Email && u.ID != user.ID)
+                {
+                    error += "User Email Already Exists. ";
+                }
+                if (u.PhoneNumber == user.PhoneNumber && u.ID != user.ID)
+                {
+                    error += "User Phone Number Already Exists. ";
+                }
+            }
+            if (!String.IsNullOrEmpty(error))
+            {
+                TempData["RegisterError"] = error;
+                return View("Edit_user");
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(user);
+                    var me = await _context.Users.FindAsync(id);
+                    me.FirstName = user.FirstName;
+                    me.LastName = user.LastName;
+                    me.Age = user.Age;
+                    me.Email = user.Email;
+                    me.Password = user.Password;
+                    me.PhoneNumber = user.PhoneNumber;
+                    _context.Update(me);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -317,7 +364,7 @@ namespace GroundBNB.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit_user));
             }
             return View(user);
         }
