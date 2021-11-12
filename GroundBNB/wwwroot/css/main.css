@@ -239,7 +239,7 @@ header .right-nav a:not(:last-child) {
 footer {
   position: absolute;
   width: 100%;
-  bottom: 8px;
+  bottom: 0px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
