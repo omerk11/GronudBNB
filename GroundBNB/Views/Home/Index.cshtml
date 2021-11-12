@@ -1,17 +1,114 @@
-﻿@{
+﻿@using System.Text.RegularExpressions
+@{
     ViewData["Title"] = "Home Page";
+    //var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+    string userName = "";
+    if (User.Identity.IsAuthenticated)
+    {
+        userName = User.Identity.Name;
+    }
+    Layout = null;
 }
 
-<div class="text-center">
-    @if (User.Identity.IsAuthenticated)
-    {
-        <h1 class="display-4">Welcome @User.Identity.Name</h1>
-        var userID = User.Claims.FirstOrDefault(c => c.Type == "ID");
+<!DOCTYPE html>
 
-    }
+<html lang="en">
 
-    else
-    {
-        <h1 class="display-4">Welcome </h1>
-    }
-</div>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ground BNB</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="navigation">
+            <div class="left-nav">
+                <a href="/">
+                    <div class="logo"></div>
+                    <div class="titlelogo">
+                        Ground BNB
+                    </div>
+                </a>
+            </div>
+            <div class="right-nav">
+                <a class="btn btn-light" asp-area="" asp-controller="Apartments" asp-action="Index">Apartments</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-light" asp-area="" asp-controller="Reservations" asp-action="MyReservation">
+                        My
+                        Reservations
+                    </a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Apartments" asp-action="MyApartments"
+                       asp-route-myAps="@true">My Apartments</a>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-light" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Statistics" asp-action="Index">Site Statistics</a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Reservations" asp-action="Index">Reservations</a>
+                }
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a class="btn btn-light" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Users" asp-action="Create">Sign Up</a>
+                }
+                else
+                {
+                    var userID = @User.Claims.FirstOrDefault(c => c.Type == "ID").ToString().Replace("ID: ", "");
+
+                    <a class="btn btn-light" asp-area="" asp-controller="Users" asp-action="Edit_user"
+                       asp-route-id="@userID">Settings</a>
+                    <a class="btn btn-light" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                }
+            </div>
+        </div>
+    </header>
+
+    <style>
+        #home {
+            background-image: url(/nyc.jpg);
+            background-position: center center;
+            background-attachment: fixed;
+            background-size: cover;
+            width: 100%;
+            height: 640px;
+        }
+
+        .title {
+            font-size: 70px;
+            text-transform: capitalize;
+            position: absolute;
+            top: 20%;
+            text-align: center;
+            width: 100%;
+            color: #121B48;
+        }
+    </style>
+
+
+
+    <div id="home">
+        <div class="text-center">
+            <p class="title">Welcome @userName</p>
+        </div>
+    </div>
+
+
+    <footer>
+        &copy; 2021 All rights reserved to GroundBNB
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+
+</html>
