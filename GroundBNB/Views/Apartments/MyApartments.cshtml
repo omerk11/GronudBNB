@@ -6,18 +6,19 @@
 }
 
 <main class="main-list">
-        <h1>
-            My Apartments
-        </h1>
-        <p>
-            <a class="btn btn-info" asp-action="Create">Add New Apartment</a>
-            <a class="btn btn-info" asp-controller="Reservations" asp-action="ReservationsForMyApartments" >View Reservations For My Apartments</a>
-        </p>
+    <h1>
+        My Apartments
+    </h1>
+    <p>
+        <a class="btn btn-info" asp-action="Create">Add New Apartment</a>
+        <a class="btn btn-info" asp-controller="Reservations" asp-action="ReservationsForMyApartments">View Reservations
+            For My Apartments</a>
+    </p>
 
-        @foreach (var item in Model)
-        {
-            <section>
-                <a asp-action="Details" asp-route-id="@item.ID" class="container-a">
+    @foreach (var item in Model)
+    {
+        <section>
+            <a asp-action="Details" asp-route-id="@item.ID" class="container-a">
                 <div class="data">
                     <div class="desc">
                         <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
@@ -27,7 +28,7 @@
                         <p>
                             <strong>St: </strong> @Html.DisplayFor(modelItem => item.Street)<br />
                             <strong>Floor: </strong> @Html.DisplayFor(modelItem => item.Floor)<br />
-                            <strong>Apartment Number: </strong> @Html.DisplayFor(modelItem => item.ApartmentNumber) <br/>
+                            <strong>Apartment Number: </strong> @Html.DisplayFor(modelItem => item.ApartmentNumber) <br />
                             <strong>Fit For @Html.DisplayFor(modelItem => item.MaxNumOfGuests) Guests</strong>
                         </p>
                     </div>
@@ -37,30 +38,39 @@
                     </div>
                 </div>
                 <div class="footerdata">
-                    @Html.DisplayFor(modelItem => item.City) <span>|</span> $@Html.DisplayFor(modelItem => item.PricePerDay)/day <span>|</span> @Html.DisplayFor(modelItem => item.NumOfRooms) Rooms 
-                    
-                    <span>|</span> @Html.Raw(reviewCount[item.ID] > 0 ? string.Format("{0} Stars! ({1} Reviews)", item.AvgRating, reviewCount[item.ID]) : "UnRated")
+                    @Html.DisplayFor(modelItem => item.City) <span>|</span> $@Html.DisplayFor(modelItem =>
+                item.PricePerDay)/day <span>|</span> @Html.DisplayFor(modelItem => item.NumOfRooms) Rooms
+
+                    <span>|</span> @Html.Raw(reviewCount[item.ID] > 0 ? string.Format("{0} Stars! ({1} Reviews)",
+                item.AvgRating, reviewCount[item.ID]) : "UnRated")
                 </div>
-                </a>
-            </section>
-        }
+            </a>
+        </section>
+    }
 </main>
 
 @section Scripts
 {
-    <script>
-        $(document).ready(function () {
-            $.each($("a[name='remove_ap']"), function (index, e) {
-                $(this).click(function () {
-                    var id = $(this).data("id");
-                    $that = $(this);
+<script>
+    $(document).ready(function () {
+        $.each($("a[name='remove_ap']"), function (index, e) {
+            $(this).click(function () {
+                var id = $(this).data("id");
+                var $that = $(this);
+
+                if (confirm("Are you sure you want to delete this apartment?")) {
                     $.post('/api/ApartmentsApi/Delete', { id: id }, function (data, status) {
-                        if(data === true) {
+                        if (data === true) {
                             $that.parent().parent().parent().remove();
+                            alert("Apartment has been deleted");
+                            return;
                         }
+
+                        alert("Some error has been occured");
                     });
-                })
+                }
             })
         })
-    </script>
+    })
+</script>
 }
