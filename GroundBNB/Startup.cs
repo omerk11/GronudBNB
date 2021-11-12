@@ -33,7 +33,8 @@ namespace GroundBNB
             services.AddDbContext<SiteContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                    .AddRazorRuntimeCompilation();
             services.AddTransient<ISiteViewsService, SiteViewsService>();
             services.AddTransient<IApartmentViewsService, ApartmentViewsService>();
 
