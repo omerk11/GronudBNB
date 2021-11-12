@@ -1,3 +1,7 @@
+/**
+RESET CSS 
+**/
+
 html,
 body,
 div,
@@ -172,17 +176,12 @@ article {
   position: relative;
 }
 
+/** SITE CSS **/
 header {
   height: 80px;
   background-color: #121B48;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
   justify-content: flex-start;
 }
 
@@ -221,14 +220,8 @@ header .left-nav .titlelogo {
 }
 
 header .right-nav {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
   justify-content: flex-start;
 }
 
@@ -240,14 +233,8 @@ footer {
   position: absolute;
   width: 100%;
   bottom: 0px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   height: 29px;
   background-color: #dd0a35;
@@ -257,23 +244,13 @@ footer {
 }
 
 .main-list {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
-  -ms-flex: auto;
   flex: auto;
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
   justify-content: flex-start;
   width: 1024px;
   margin: 0 auto;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 0 10px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
   padding-top: 20px;
 }
@@ -285,23 +262,15 @@ footer {
 
 .main-list section {
   margin-top: 10px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
   width: 100%;
   background-color: #FFF;
   border: 1px solid #CFCFCF;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
 .main-list section .data {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   width: 100%;
   position: relative;
@@ -309,7 +278,6 @@ footer {
 
 .main-list section .desc {
   padding: 10px;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 500px;
 }
@@ -336,19 +304,13 @@ footer {
 .main-list section .footerdata {
   height: 30px;
   width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -ms-flex-pack: distribute;
   justify-content: space-around;
   font-size: 13px;
   line-height: 1;
   background-color: #eef5ff;
   color: #182850;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 0 10px;
   font-weight: bold;
