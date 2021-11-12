@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GroundBNB.Models.Apartment>
+@model IEnumerable<GroundBNB.Models.Apartment>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,6 +8,11 @@
     var endDate = ViewData["EndDateFilter"] as string;
 }
 
+<style>
+    label {
+        font-weight: bold;
+    }
+</style>
 <main class="main-list">
     <h1>Find Your Dream Vacation Apartment!</h1>
 
@@ -16,36 +21,47 @@
         <h2 class="alert-danger" style="padding:20px;">@error</h2>
     }
 
-
-    <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
-
-            <h5>Find Apartment By Title:</h5> <input type="text" name="searchName" value="@ViewData["NameFilter"]" />
-            <h5>Find Apartment By City:</h5> <input type="text" name="searchCity" value="@ViewData["CityFilter"]" />
-            <h5>Start Date:</h5><input type="date" name="startDate" value="@startDate" />
-            <h5>End Date:</h5><input type="date" name="endDate" value="@endDate" />
-            <input type="submit" value="Search" class="btn btn-primary" />
-
+    <form asp-action="Index" method="get" style="margin-top: 10px;">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="searchName">Find Apartment By Title</label>
+                <input type="text" id="searchName" class="form-control" name="searchName"
+                    value="@ViewData["NameFilter"]">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="searchCity">Find Apartment By City</label>
+                <input type="text" id="searchCity" class="form-control" name="searchCity"
+                    value="@ViewData["CityFilter"]">
+            </div>
         </div>
-        <a class="btn-sm btn-danger" asp-action="Index">Clear Search</a>
+        <div class="form-group">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" class="form-control" name="startDate" value="@startDate">
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" class="form-control" name="endDate" value="@endDate">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+        <button class="btn btn-danger" asp-action="Index">Clear Search</button>
     </form>
 </main>
 <main class="main-list">
     <div class="sort-options">
         <strong>Sort by: </strong>
-        <a asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]"
+        <a class="btn btn-info" asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]"
             asp-route-searchName="@ViewData["NameFilter"]"
             asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
 
-        <a asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]"
+        <a class="btn btn-info" asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]"
             asp-route-searchName="@ViewData["NameFilter"]"
             asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
 
-        <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]"
+        <a class="btn btn-info" asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]"
             asp-route-searchName="@ViewData["NameFilter"]"
             asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
 
-        <a asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]"
+        <a class="btn btn-info" asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]"
             asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
     </div>
 

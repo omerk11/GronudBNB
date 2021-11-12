@@ -359,6 +359,7 @@ footer {
 .sort-options {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
 }
 
 .sort-options a {
