@@ -6,82 +6,55 @@
 
 <h1>Reservations For my Apartments</h1>
 
+<main class="main-list">
+    @foreach (var item in Model)
+    {
+        <section>
+            <a asp-action="Details" asp-controller="Apartments" asp-route-id="@item.Apartment.ID">
+                <div class="data">
+                    <div class="desc">
+                        <h2>@Html.DisplayFor(modelItem => item.Apartment.Title)</h2>
+                        <p>
+                            @Html.DisplayFor(modelItem => item.Apartment.Description)
+                        </p>
+                        <p>
+                            <strong>St: </strong> @Html.DisplayFor(modelItem => item.Apartment.Street)<br />
+                            <strong>Floor: </strong> @Html.DisplayFor(modelItem => item.Apartment.Floor)<br />
+                            <strong>Apartment Number: </strong> @Html.DisplayFor(modelItem => item.Apartment.ApartmentNumber) <br />
+                            <strong>Fit For @Html.DisplayFor(modelItem => item.Apartment.MaxNumOfGuests) Guests</strong>
+                            <strong>Guests: </strong>@Html.DisplayFor(modelItem => item.NumberOfGuests)<br />
+                            <strong>Start Date: </strong>@Html.DisplayFor(modelItem => item.StartDate)<br />
+                            <strong>End Date: </strong>@Html.DisplayFor(modelItem => item.EndDate)<br />
+                            <strong>Purchase Data: </strong>@Html.DisplayFor(modelItem => item.PurchseDate)
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Guest)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfGuests)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Apartment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PurchseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Review)
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @item.Guest.FirstName @item.Guest.LastName
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumberOfGuests)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-controller="Apartments" asp-route-id="@item.Apartment.ID" style="">
-                        @Html.DisplayFor(modelItem => item.Apartment.Title)
-                        </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PurchseDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Rating)
-                </td>
-                <td>
-                    @if (!String.IsNullOrEmpty(item.Review))
-                    {
-                        Html.DisplayFor(modelItem => item.Review);
-                    }
-                    else
-                    {
-                        <p>No Review Submited</p>
-                    }
-                </td>
+                        </p>
+                    </div>
+                    <div class="tools">
+                        <a asp-action="Delete" asp-route-id="@item.ID">Cancel Reservation |</a>
+                    </div>
+                </div>
+                <div class="data">
+                    <div class="desc">
+                        <p>
+                            @if (!String.IsNullOrEmpty(item.Review))
+                            {
+                            <p>@item.Review</p>
+                        }
+                        else
+                        {
+                            <p>No Review Submited</p>
+                        }
+                            </p>
+                        </div>
+                    </div>
+                    <div class="footerdata">
+                        @Html.DisplayFor(modelItem => item.Apartment.City) <span>|</span> $@Html.DisplayFor(modelItem =>
+item.Apartment.PricePerDay)/day <span>|</span> @Html.DisplayFor(modelItem => item.Apartment.NumOfRooms) Rooms
 
-                <td>
-                    <a asp-action="Delete" asp-route-id="@item.ID">Cancel Reservation |</a>
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<span>|</span> Rating: @(item.Rating)/5
+
+</div>
+</a>
+</section>
+}
+</main>
