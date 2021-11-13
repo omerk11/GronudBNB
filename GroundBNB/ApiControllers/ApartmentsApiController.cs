@@ -29,8 +29,13 @@ namespace GroundBNB.Api_Controllers
 
         public bool Delete([FromForm] int id)
         {
-            // TODO: Make sure only speciic roles can delete apartments
+
             var apartment = _context.Apartments.Find(id);
+            if (!User.Identity.IsAuthenticated || 
+                !(User.IsInRole("Admin") ||(apartment.ApartmentOwnerID.ToString() == User.Claims.FirstOrDefault(c => c.Type == "ID").ToString().Replace("ID: ", ""))))
+            {
+                return false;
+            }
             if (apartment != null)
             {
                 var res = _context.Reservations.Where(k => k.ApartmentID == apartment.ID);
@@ -40,7 +45,8 @@ namespace GroundBNB.Api_Controllers
                     _context.Reservations.RemoveRange(res);
                 }
 
-                if(views.Count() > 0) {
+                if (views.Count() > 0)
+                {
                     _context.ApartmentViews.RemoveRange(views);
                 }
 
