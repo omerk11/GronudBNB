@@ -26,12 +26,12 @@
             <div class="form-group col-md-6">
                 <label for="searchName">Find Apartment By Title</label>
                 <input type="text" id="searchName" class="form-control" name="searchName"
-                    value="@ViewData["NameFilter"]">
+                       value="@ViewData["NameFilter"]">
             </div>
             <div class="form-group col-md-6">
                 <label for="searchCity">Find Apartment By City</label>
                 <input type="text" id="searchCity" class="form-control" name="searchCity"
-                    value="@ViewData["CityFilter"]">
+                       value="@ViewData["CityFilter"]">
             </div>
         </div>
         <div class="form-group">
@@ -50,19 +50,19 @@
     <div class="sort-options">
         <strong>Sort by: </strong>
         <a class="btn btn-info" asp-action="Index" asp-route-sortOrder="@ViewData["RoomsSortParm"]"
-            asp-route-searchName="@ViewData["NameFilter"]"
-            asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
+           asp-route-searchName="@ViewData["NameFilter"]"
+           asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.NumOfRooms)</a>
 
         <a class="btn btn-info" asp-action="Index" asp-route-sortOrder="@ViewData["NumOfGuestsSortParm"]"
-            asp-route-searchName="@ViewData["NameFilter"]"
-            asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
+           asp-route-searchName="@ViewData["NameFilter"]"
+           asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.MaxNumOfGuests)</a>
 
         <a class="btn btn-info" asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]"
-            asp-route-searchName="@ViewData["NameFilter"]"
-            asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
+           asp-route-searchName="@ViewData["NameFilter"]"
+           asp-route-searchCity="@ViewData["CityFilter"]">@Html.DisplayNameFor(model => model.PricePerDay)</a>
 
         <a class="btn btn-info" asp-action="Index" asp-route-sortOrder="@ViewData["RatingSortParm"]"
-            asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
+           asp-route-searchName="@ViewData["NameFilter"]" asp-route-searchCity="@ViewData["CityFilter"]">Rating</a>
     </div>
 
     @foreach (var item in Model)
@@ -86,19 +86,24 @@
                         @if (User.Identity.IsAuthenticated && startDate != null && endDate != null)
                         {
                             <a asp-controller="Reservations" asp-action="Create" asp-route-startDate="@startDate"
-                        asp-route-endDate="@endDate" asp-route-apID="@item.ID">Add Reservation</a>
+                               asp-route-endDate="@endDate" asp-route-apID="@item.ID">Add Reservation</a>
+                        }
+                        else
+                        {
+                            
+                    <p style="color : black">Search Dates To Add Reservation</p>
                         }
                     </div>
                 </div>
                 <div class="footerdata">
                     @Html.DisplayFor(modelItem => item.City) <span>|</span> $@Html.DisplayFor(modelItem =>
-                item.PricePerDay)/day <span>|</span> @Html.DisplayFor(modelItem => item.NumOfRooms) Rooms
+item.PricePerDay)/day <span>|</span> @Html.DisplayFor(modelItem => item.NumOfRooms) Rooms
 
-                    <span>|</span> @Html.Raw(reviewCount[item.ID] > 0 ? string.Format("{0} Stars! ({1} Reviews)",
-                item.AvgRating, reviewCount[item.ID]) : "UnRated")
+<span>|</span> @Html.Raw(reviewCount[item.ID] > 0 ? string.Format("{0} Stars! ({1} Reviews)",
+item.AvgRating, reviewCount[item.ID]) : "UnRated")
 
-                </div>
-            </a>
-        </section>
-    }
+</div>
+</a>
+</section>
+}
 </main>

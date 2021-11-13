@@ -301,6 +301,11 @@ namespace GroundBNB.Controllers
             {
                 return NotFound();
             }
+            if(!User.Identity.IsAuthenticated ||
+                !(User.IsInRole("Admin") || (id.ToString() == User.Claims.FirstOrDefault(c => c.Type == "ID").ToString().Replace("ID: ", ""))))
+            {
+                return NotFound();
+            }
 
             var user = await _context.Users.FindAsync(id);
             if (user == null)
