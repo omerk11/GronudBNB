@@ -170,7 +170,7 @@
     </script>
 </main>
 <main class="main-list">
-    <h1>Reviews (@Model.Reservations.Where(x => x.Rating != null && x.Review != null).Count())</h1>
+    <h1>Reviews (@Model.Reservations.Count())</h1>
     @foreach (var item in Model.Reservations)
     {
         if (item.Rating == null && item.Review == null)
