@@ -4,9 +4,10 @@
     ViewData["Title"] = "Reservations For my Apartments";
 }
 
-<h1>Reservations For my Apartments</h1>
+
 
 <main class="main-list">
+    <h1>Reservations For my Apartments</h1>
     @foreach (var item in Model)
     {
         <section>
@@ -30,7 +31,7 @@
                         </p>
                     </div>
                     <div class="tools">
-                        <a asp-action="Delete" asp-route-id="@item.ID">Cancel Reservation |</a>
+                        <a asp-action="Delete" asp-route-id="@item.ID">Cancel Reservation</a>
                     </div>
                 </div>
                 <div class="data">
