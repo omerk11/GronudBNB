@@ -291,7 +291,11 @@ namespace GroundBNB.Controllers
             return View(user);
         }
 
-
+        [HttpGet("denied")]
+        public IActionResult Denied()
+        {
+            return View();
+        }
 
         // GET: Users/Edit_user/5
         [Authorize]
