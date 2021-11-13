@@ -4,6 +4,12 @@
     ViewData["Title"] = "Create";
     var userID = User.Claims.FirstOrDefault(c => c.Type == "ID").Value;
 }
+
+<style>
+    label {
+        font-weight: bold;
+    }
+</style>
 <main class="main-list">
     <h1>Create Apartment</h1>
     <div class="row">
