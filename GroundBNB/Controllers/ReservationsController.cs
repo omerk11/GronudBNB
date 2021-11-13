@@ -47,27 +47,6 @@ namespace GroundBNB.Controllers
             }
         }
 
-        // GET: Reservations/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            this._siteviews.Increment();
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var reservation = await _context.Reservations
-                .Include(r => r.Apartment)
-                .Include(r => r.Guest)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-
-            return View(reservation);
-        }
 
         // GET: Reservations/Create
         public IActionResult Create(DateTime? startDate, DateTime? endDate, int apID)
